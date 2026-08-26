@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nepal जिल्ला Quiz</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+<div class="wrap">
+  <div class="topbar">
+    <h1 class="title">Nepal जिल्ला<small>District Recognition Drill</small></h1>
+    <div class="scores">
+      <div class="best-badge">
+        <div class="best-num" id="streakNum">0</div>
+        <div class="best-label">Streak</div>
+      </div>
+      <div class="best-badge">
+        <div class="best-num" id="bestNum">0</div>
+        <div class="best-label">Best</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <input class="search-input" id="searchInput" type="text" placeholder="Type a district name to find it…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    <div class="search-msg" id="searchMsg"></div>
+  </div>
+
+  <div class="prov-select-wrap">
+    <button class="prov-tab" id="modeTab">
+      <span><span class="dot" id="modeTabDot" style="background:var(--gold)"></span><span id="modeTabLabel">Districts</span></span>
+      <span class="chev">▾</span>
+    </button>
+    <div class="prov-panel" id="modePanel">
+      <div class="prov-grid" id="modeGrid" style="grid-template-columns:repeat(3,1fr);"></div>
+    </div>
+  </div>
+
+  <div class="prov-select-wrap">
+    <button class="prov-tab" id="provTab">
+      <span><span class="dot" id="provTabDot" style="background:var(--gold)"></span><span id="provTabLabel">All Nepal</span></span>
+      <span class="chev">▾</span>
+    </button>
+    <div class="prov-panel" id="provPanel">
+      <div class="prov-grid" id="provGrid"></div>
+    </div>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-label">Tap on</div>
+    <div class="prompt-name" id="promptName">—</div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <div class="map-frame">
+    <div class="tap-label" id="tapLabel"></div>
+    <svg id="map" viewBox="0 0 1000 572" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+
+  <div class="footer">
+    <div class="best-line">Longest streak (this scope): <b id="bestInline">0</b></div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <div class="shadow-toggle">
+        Shadowing
+        <div class="switch" id="shadowSwitch"><div class="knob"></div></div>
+      </div>
+      <button class="mute-btn active" id="muteBtn">SOUND ON</button>
+    </div>
+  </div>
+
+  <div class="leaderboard">
+    <div class="lb-head">
+      <div class="lb-title">Top 5 Streaks</div>
+      <div class="lb-scope" id="lbScopeLabel">All Nepal</div>
+    </div>
+    <div id="lbList"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+
+
+<script src="app.js"></script>
+</body>
+</html>
