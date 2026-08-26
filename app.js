@@ -22,6 +22,8 @@ const MODE_COLOR = { district:'#c9a24b', city:'#7ab8e0', landmark:'#c48fe0' };
 let districts; // populated after data loads
 
 const svg = document.getElementById('map');
+const mapViewport = document.getElementById('mapViewport');
+const zoomResetBtn = document.getElementById('zoomReset');
 const promptEl = document.getElementById('promptName');
 const feedbackEl = document.getElementById('feedback');
 const streakNumEl = document.getElementById('streakNum');
@@ -588,16 +590,106 @@ const storage = {
 // ---- Data loading ----
 async function loadData(){
   const [districtsData, provinceData, citiesData, landmarksData] = await Promise.all([
-    fetch('districts.json').then(r => r.json()),
-    fetch('provinces.json').then(r => r.json()),
-    fetch('cities.json').then(r => r.json()),
-    fetch('landmarks.json').then(r => r.json()),
+    fetch('data/districts.json').then(r => r.json()),
+    fetch('data/provinces.json').then(r => r.json()),
+    fetch('data/cities.json').then(r => r.json()),
+    fetch('data/landmarks.json').then(r => r.json()),
   ]);
   DATA = districtsData;
   PROVINCE_OF = provinceData;
   CITIES = citiesData;
   LANDMARKS = landmarksData;
 }
+
+// ---- Map pinch-zoom / pan (isolated to the map viewport, doesn't touch page zoom) ----
+let mapScale = 1, mapX = 0, mapY = 0;
+const MIN_SCALE = 1, MAX_SCALE = 6;
+
+function applyMapTransform(){
+  svg.style.transform = `translate(${mapX}px, ${mapY}px) scale(${mapScale})`;
+}
+
+function clampPan(){
+  const vpRect = mapViewport.getBoundingClientRect();
+  const maxX = 0;
+  const minX = vpRect.width - vpRect.width * mapScale;
+  const maxY = 0;
+  const minY = vpRect.height - vpRect.height * mapScale;
+  mapX = Math.min(maxX, Math.max(minX, mapX));
+  mapY = Math.min(maxY, Math.max(minY, mapY));
+}
+
+function resetMapZoom(){
+  mapScale = 1; mapX = 0; mapY = 0;
+  applyMapTransform();
+}
+zoomResetBtn.addEventListener('click', resetMapZoom);
+
+// Pointer-based pinch + pan (works for touch; mouse drag also supported)
+const activePointers = new Map();
+let pinchStartDist = 0;
+let pinchStartScale = 1;
+let panStart = null;
+
+function dist(p1, p2){
+  return Math.hypot(p1.x - p2.x, p1.y - p2.y);
+}
+function midpoint(p1, p2){
+  return { x: (p1.x + p2.x)/2, y: (p1.y + p2.y)/2 };
+}
+
+mapViewport.addEventListener('pointerdown', (e) => {
+  try{ mapViewport.setPointerCapture(e.pointerId); }catch(err){ /* ignore capture failures */ }
+  activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if(activePointers.size === 2){
+    const pts = [...activePointers.values()];
+    pinchStartDist = dist(pts[0], pts[1]);
+    pinchStartScale = mapScale;
+  } else if(activePointers.size === 1){
+    panStart = { x: e.clientX - mapX, y: e.clientY - mapY };
+  }
+});
+
+mapViewport.addEventListener('pointermove', (e) => {
+  if(!activePointers.has(e.pointerId)) return;
+  activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+  if(activePointers.size === 2){
+    const pts = [...activePointers.values()];
+    const newDist = dist(pts[0], pts[1]);
+    if(pinchStartDist > 0){
+      let newScale = pinchStartScale * (newDist / pinchStartDist);
+      newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, newScale));
+      mapScale = newScale;
+      clampPan();
+      applyMapTransform();
+    }
+  } else if(activePointers.size === 1 && panStart && mapScale > 1){
+    mapX = e.clientX - panStart.x;
+    mapY = e.clientY - panStart.y;
+    clampPan();
+    applyMapTransform();
+  }
+});
+
+function endPointer(e){
+  activePointers.delete(e.pointerId);
+  if(activePointers.size < 2) pinchStartDist = 0;
+  if(activePointers.size === 0) panStart = null;
+}
+mapViewport.addEventListener('pointerup', endPointer);
+mapViewport.addEventListener('pointercancel', endPointer);
+mapViewport.addEventListener('pointerleave', endPointer);
+
+// Desktop scroll-wheel zoom, centered roughly on cursor
+mapViewport.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const delta = e.deltaY < 0 ? 1.1 : 0.9;
+  let newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, mapScale * delta));
+  mapScale = newScale;
+  clampPan();
+  applyMapTransform();
+}, { passive:false });
 
 // ---- Init ----
 (async function init(){
