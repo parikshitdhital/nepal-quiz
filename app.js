@@ -679,35 +679,50 @@ function showFactPanel(name){
   factPanel.style.display = '';
 }
 
-// ---- Map pinch-zoom / pan (isolated to the map viewport, doesn't touch page zoom) ----
-let mapScale = 1, mapX = 0, mapY = 0;
+// ---- Map pinch-zoom / pan via native SVG viewBox (stays vector-crisp at any zoom — no raster upscaling) ----
+let baseVB = { x:0, y:0, w:1000, h:572 }; // set from DATA.viewBox once loaded
+let vb = { x:0, y:0, w:1000, h:572 };     // current visible viewBox window
 const MIN_SCALE = 1, MAX_SCALE = 6;
 
-function applyMapTransform(){
-  svg.style.transform = `translate(${mapX}px, ${mapY}px) scale(${mapScale})`;
+function initViewBox(){
+  const parts = DATA.viewBox.split(' ').map(Number);
+  baseVB = { x:parts[0], y:parts[1], w:parts[2], h:parts[3] };
+  vb = { ...baseVB };
+  applyViewBox();
+}
+function applyViewBox(){
+  svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+}
+function currentScale(){
+  return baseVB.w / vb.w;
 }
 
-function clampPan(){
-  const vpRect = mapViewport.getBoundingClientRect();
-  const maxX = 0;
-  const minX = vpRect.width - vpRect.width * mapScale;
-  const maxY = 0;
-  const minY = vpRect.height - vpRect.height * mapScale;
-  mapX = Math.min(maxX, Math.max(minX, mapX));
-  mapY = Math.min(maxY, Math.max(minY, mapY));
+function clampViewBox(){
+  vb.w = Math.min(baseVB.w, Math.max(baseVB.w / MAX_SCALE, vb.w));
+  vb.h = Math.min(baseVB.h, Math.max(baseVB.h / MAX_SCALE, vb.h));
+  vb.x = Math.min(baseVB.x + (baseVB.w - vb.w), Math.max(baseVB.x, vb.x));
+  vb.y = Math.min(baseVB.y + (baseVB.h - vb.h), Math.max(baseVB.y, vb.y));
 }
 
 function resetMapZoom(){
-  mapScale = 1; mapX = 0; mapY = 0;
-  applyMapTransform();
+  vb = { ...baseVB };
+  applyViewBox();
 }
 zoomResetBtn.addEventListener('click', resetMapZoom);
 
-// Pointer-based pinch + pan (works for touch; mouse drag also supported)
+// Convert a screen point (relative to the viewport element) into map content coordinates
+function screenToContent(relX, relY){
+  const rect = mapViewport.getBoundingClientRect();
+  return {
+    x: vb.x + (relX / rect.width) * vb.w,
+    y: vb.y + (relY / rect.height) * vb.h
+  };
+}
+
 const activePointers = new Map();
 let pinchStartDist = 0;
 let pinchStartScale = 1;
-let panStart = null;
+let panStart = null; // { screenX, screenY, vbX, vbY }
 
 function dist(p1, p2){
   return Math.hypot(p1.x - p2.x, p1.y - p2.y);
@@ -722,9 +737,9 @@ mapViewport.addEventListener('pointerdown', (e) => {
   if(activePointers.size === 2){
     const pts = [...activePointers.values()];
     pinchStartDist = dist(pts[0], pts[1]);
-    pinchStartScale = mapScale;
+    pinchStartScale = currentScale();
   } else if(activePointers.size === 1){
-    panStart = { x: e.clientX - mapX, y: e.clientY - mapY };
+    panStart = { screenX: e.clientX, screenY: e.clientY, vbX: vb.x, vbY: vb.y };
   }
 });
 
@@ -744,21 +759,24 @@ mapViewport.addEventListener('pointermove', (e) => {
       const midRelX = mid.x - rect.left;
       const midRelY = mid.y - rect.top;
 
-      // Keep the point under the fingers fixed in place while scale changes
-      const contentX = (midRelX - mapX) / mapScale;
-      const contentY = (midRelY - mapY) / mapScale;
-      mapScale = newScale;
-      mapX = midRelX - contentX * mapScale;
-      mapY = midRelY - contentY * mapScale;
+      // Keep the map point under the fingers fixed while the viewBox window resizes
+      const content = screenToContent(midRelX, midRelY);
+      vb.w = baseVB.w / newScale;
+      vb.h = baseVB.h / newScale;
+      vb.x = content.x - (midRelX / rect.width) * vb.w;
+      vb.y = content.y - (midRelY / rect.height) * vb.h;
 
-      clampPan();
-      applyMapTransform();
+      clampViewBox();
+      applyViewBox();
     }
-  } else if(activePointers.size === 1 && panStart && mapScale > 1){
-    mapX = e.clientX - panStart.x;
-    mapY = e.clientY - panStart.y;
-    clampPan();
-    applyMapTransform();
+  } else if(activePointers.size === 1 && panStart && currentScale() > 1){
+    const rect = mapViewport.getBoundingClientRect();
+    const dxScreen = e.clientX - panStart.screenX;
+    const dyScreen = e.clientY - panStart.screenY;
+    vb.x = panStart.vbX - (dxScreen / rect.width) * vb.w;
+    vb.y = panStart.vbY - (dyScreen / rect.height) * vb.h;
+    clampViewBox();
+    applyViewBox();
   }
 });
 
@@ -775,26 +793,27 @@ mapViewport.addEventListener('pointerleave', endPointer);
 mapViewport.addEventListener('wheel', (e) => {
   e.preventDefault();
   const delta = e.deltaY < 0 ? 1.1 : 0.9;
-  let newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, mapScale * delta));
+  let newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, currentScale() * delta));
 
   const rect = mapViewport.getBoundingClientRect();
   const cursorX = e.clientX - rect.left;
   const cursorY = e.clientY - rect.top;
-  const contentX = (cursorX - mapX) / mapScale;
-  const contentY = (cursorY - mapY) / mapScale;
+  const content = screenToContent(cursorX, cursorY);
 
-  mapScale = newScale;
-  mapX = cursorX - contentX * mapScale;
-  mapY = cursorY - contentY * mapScale;
+  vb.w = baseVB.w / newScale;
+  vb.h = baseVB.h / newScale;
+  vb.x = content.x - (cursorX / rect.width) * vb.w;
+  vb.y = content.y - (cursorY / rect.height) * vb.h;
 
-  clampPan();
-  applyMapTransform();
+  clampViewBox();
+  applyViewBox();
 }, { passive:false });
 
 // ---- Init ----
 (async function init(){
   await loadData();
   buildMap();
+  initViewBox();
   buildModeUI();
   buildProvinceUI();
   applyDimming();
