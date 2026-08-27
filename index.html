@@ -29,23 +29,25 @@
     <div class="search-msg" id="searchMsg"></div>
   </div>
 
-  <div class="prov-select-wrap">
-    <button class="prov-tab" id="modeTab">
-      <span><span class="dot" id="modeTabDot" style="background:var(--gold)"></span><span id="modeTabLabel">Districts</span></span>
-      <span class="chev">▾</span>
-    </button>
-    <div class="prov-panel" id="modePanel">
-      <div class="prov-grid" id="modeGrid" style="grid-template-columns:repeat(3,1fr);"></div>
+  <div class="tabs-row">
+    <div class="tab-col compact-col">
+      <button class="prov-tab compact" id="modeTab">
+        <span><span class="dot" id="modeTabDot" style="background:var(--gold)"></span><span id="modeTabLabel">Districts</span></span>
+        <span class="chev">▾</span>
+      </button>
+      <div class="prov-panel" id="modePanel">
+        <div class="prov-grid" id="modeGrid" style="grid-template-columns:repeat(3,1fr);"></div>
+      </div>
     </div>
-  </div>
 
-  <div class="prov-select-wrap">
-    <button class="prov-tab" id="provTab">
-      <span><span class="dot" id="provTabDot" style="background:var(--gold)"></span><span id="provTabLabel">All Nepal</span></span>
-      <span class="chev">▾</span>
-    </button>
-    <div class="prov-panel" id="provPanel">
-      <div class="prov-grid" id="provGrid"></div>
+    <div class="tab-col wide-col">
+      <button class="prov-tab compact" id="provTab">
+        <span><span class="dot" id="provTabDot" style="background:var(--gold)"></span><span id="provTabLabel">All Nepal</span></span>
+        <span class="chev">▾</span>
+      </button>
+      <div class="prov-panel" id="provPanel">
+        <div class="prov-grid" id="provGrid"></div>
+      </div>
     </div>
   </div>
 

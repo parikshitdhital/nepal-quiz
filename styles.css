@@ -110,8 +110,21 @@
   }
 
   /* Province selector */
-  .prov-select-wrap{
+  .tabs-row{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
     margin-bottom:10px;
+  }
+  .tab-col{
+    min-width:0;
+  }
+  .compact-col{
+    flex:0 0 auto;
+  }
+  .wide-col{
+    flex:1 1 auto;
+    min-width:0;
   }
   .prov-tab{
     width:100%;
@@ -129,6 +142,14 @@
     letter-spacing:0.5px;
     cursor:pointer;
   }
+  .prov-tab.compact{
+    padding:10px 12px;
+    gap:10px;
+  }
+  .compact-col .prov-tab{
+    width:auto;
+    white-space:nowrap;
+  }
   .prov-tab .dot{
     display:inline-block;
     width:9px;height:9px;
@@ -142,6 +163,9 @@
     font-size:11px;
   }
   .prov-tab.open .chev{transform:rotate(180deg);}
+  .tab-col{
+    position:relative;
+  }
   .prov-panel{
     max-height:0;
     overflow:hidden;
@@ -149,6 +173,19 @@
   }
   .prov-panel.open{
     max-height:300px;
+  }
+  .compact-col .prov-panel{
+    position:absolute;
+    top:calc(100% + 4px);
+    left:0;
+    min-width:230px;
+    z-index:6;
+    background:var(--bg-deep);
+    border-radius:10px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.4);
+  }
+  .compact-col .prov-panel.open{
+    max-height:220px;
   }
   .prov-grid{
     display:grid;
