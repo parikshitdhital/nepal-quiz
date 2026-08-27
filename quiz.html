@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nepal जिल्ला Quiz</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+<div class="wrap">
+  <div class="topbar">
+    <h1 class="title">Nepal जिल्ला<small>District Recognition Drill</small></h1>
+    <div class="scores">
+      <div class="best-badge">
+        <div class="best-num" id="streakNum">0</div>
+        <div class="best-label">Streak</div>
+      </div>
+      <div class="best-badge">
+        <div class="best-num" id="bestNum">0</div>
+        <div class="best-label">Best</div>
+      </div>
+      <button class="search-icon-btn" id="searchIconBtn" title="Search">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="21" y1="21" x2="16.2" y2="16.2"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="search-wrap" id="searchWrap">
+    <input class="search-input" id="searchInput" type="text" placeholder="Type a district name to find it…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    <div class="search-msg" id="searchMsg"></div>
+  </div>
+
+  <div class="tabs-row">
+    <div class="tab-col compact-col">
+      <button class="prov-tab compact" id="modeTab">
+        <span><span class="dot" id="modeTabDot" style="background:var(--gold)"></span><span id="modeTabLabel">Districts</span></span>
+        <span class="chev">▾</span>
+      </button>
+      <div class="prov-panel" id="modePanel">
+        <div class="prov-grid" id="modeGrid" style="grid-template-columns:repeat(3,1fr);"></div>
+      </div>
+    </div>
+
+    <div class="tab-col wide-col">
+      <button class="prov-tab compact" id="provTab">
+        <span><span class="dot" id="provTabDot" style="background:var(--gold)"></span><span id="provTabLabel">All Nepal</span></span>
+        <span class="chev">▾</span>
+      </button>
+      <div class="prov-panel" id="provPanel">
+        <div class="prov-grid" id="provGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="prompt">
+    <div class="prompt-label">Tap on</div>
+    <div class="prompt-name" id="promptName">—</div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <div class="map-frame">
+    <div class="tap-label" id="tapLabel"></div>
+    <div class="reaction-pop" id="reactionPop"></div>
+    <button class="zoom-reset" id="zoomReset" title="Reset zoom">⤢</button>
+    <div class="map-viewport" id="mapViewport">
+      <svg id="map" viewBox="0 0 1000 572" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <div class="fact-panel" id="factPanel" style="display:none;">
+    <div class="fact-head">
+      <span class="fact-district" id="factDistrict"></span>
+      <span class="fact-hq" id="factHq"></span>
+    </div>
+    <div class="fact-stats">
+      <span id="factPop"></span>
+      <span class="fact-dot">·</span>
+      <span id="factArea"></span>
+    </div>
+    <div class="fact-text" id="factText"></div>
+  </div>
+
+  <div class="footer">
+    <div class="best-line">Longest streak (this scope): <b id="bestInline">0</b></div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <div class="shadow-toggle">
+        Shadowing
+        <div class="switch" id="shadowSwitch"><div class="knob"></div></div>
+      </div>
+      <div class="shadow-toggle">
+        Info
+        <div class="switch on" id="infoSwitch"><div class="knob"></div></div>
+      </div>
+      <button class="mute-btn active" id="muteBtn">SOUND ON</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+
+
+<script src="app.js"></script>
+</body>
+</html>
