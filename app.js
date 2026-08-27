@@ -44,8 +44,9 @@ const modeGrid = document.getElementById('modeGrid');
 const modeTabLabel = document.getElementById('modeTabLabel');
 const modeTabDot = document.getElementById('modeTabDot');
 const shadowSwitch = document.getElementById('shadowSwitch');
-const lbList = document.getElementById('lbList');
-const lbScopeLabel = document.getElementById('lbScopeLabel');
+const infoSwitch = document.getElementById('infoSwitch');
+const searchIconBtn = document.getElementById('searchIconBtn');
+const searchWrap = document.getElementById('searchWrap');
 const searchInput = document.getElementById('searchInput');
 const searchMsg = document.getElementById('searchMsg');
 const factPanel = document.getElementById('factPanel');
@@ -61,17 +62,16 @@ let streaks = {};
 let bests   = {};
 let soundOn = true;
 let shadowOn = false;
+let infoOn = true;
 let currentTarget = null;
 let lastAsked = null;
 let locked = false;
 let appearedCounts = {}; // namespaced by mode, drives weighting + shadowing
-let leaderboards = {};
 
 function scopeKey(){ return mode + ':' + scope; }
 function ensureScopeState(key){
   if(!(key in streaks)) streaks[key] = 0;
   if(!(key in bests)) bests[key] = 0;
-  if(!(key in leaderboards)) leaderboards[key] = [];
 }
 function appearedKey(name){ return mode + '::' + name; }
 
@@ -379,7 +379,6 @@ function handleTap(name, el){
     feedbackEl.className = 'feedback bad';
     playWrong();
     showReaction('wrong', null);
-    if(streaks[key] > 0) maybeAddToLeaderboard(key, streaks[key]);
     streaks[key] = 0;
   }
   appearedCounts[appearedKey(currentTarget)] = (appearedCounts[appearedKey(currentTarget)] || 0) + 1;
@@ -429,7 +428,6 @@ function selectScope(p){
   closePanel();
   applyDimming();
   updateScores();
-  renderLeaderboard();
   lastAsked = null;
   pickNext();
 }
@@ -456,67 +454,9 @@ function selectMode(m){
   closeModePanel();
   applyDimming();
   updateScores();
-  renderLeaderboard();
   factPanel.style.display = 'none';
   lastAsked = null;
   pickNext();
-}
-
-// ---- Leaderboard ----
-function maybeAddToLeaderboard(key, score){
-  ensureScopeState(key);
-  const board = leaderboards[key];
-  const qualifies = board.length < 5 || score > board[board.length-1].score;
-  if(!qualifies) return;
-  const entry = {
-    id: 'e' + Date.now() + Math.floor(Math.random()*1000),
-    label: 'Run ' + (board.length + 1),
-    score: score
-  };
-  board.push(entry);
-  board.sort((a,b) => b.score - a.score);
-  leaderboards[key] = board.slice(0,5);
-  saveLeaderboard(key);
-  if(key === scopeKey()) renderLeaderboard();
-  showToast('Top 5 (' + MODE_LABEL[mode] + ' · ' + PROV_LABEL[scope] + '): scored ' + score + '!');
-}
-
-function renderLeaderboard(){
-  const key = scopeKey();
-  ensureScopeState(key);
-  lbScopeLabel.textContent = MODE_LABEL[mode] + ' · ' + PROV_LABEL[scope];
-  const board = leaderboards[key];
-  lbList.innerHTML = '';
-  if(!board || board.length === 0){
-    lbList.innerHTML = '<div class="lb-empty">No streaks saved yet for this scope</div>';
-    return;
-  }
-  board.forEach((entry, i) => {
-    const row = document.createElement('div');
-    row.className = 'lb-row';
-    row.innerHTML = `
-      <div class="lb-rank">#${i+1}</div>
-      <input class="lb-label" value="${escapeAttr(entry.label)}" data-id="${entry.id}" />
-      <div class="lb-score">${entry.score}</div>
-      <button class="lb-del" data-id="${entry.id}">✕</button>
-    `;
-    lbList.appendChild(row);
-  });
-  lbList.querySelectorAll('.lb-label').forEach(inp => {
-    inp.addEventListener('change', () => {
-      const id = inp.getAttribute('data-id');
-      const e = leaderboards[key].find(x => x.id === id);
-      if(e){ e.label = inp.value.trim() || e.label; saveLeaderboard(key); }
-    });
-  });
-  lbList.querySelectorAll('.lb-del').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.getAttribute('data-id');
-      leaderboards[key] = leaderboards[key].filter(x => x.id !== id);
-      saveLeaderboard(key);
-      renderLeaderboard();
-    });
-  });
 }
 
 function escapeAttr(s){
@@ -592,6 +532,23 @@ shadowSwitch.addEventListener('click', () => {
   refreshShadowLabels();
 });
 
+infoSwitch.addEventListener('click', () => {
+  infoOn = !infoOn;
+  infoSwitch.classList.toggle('on', infoOn);
+  if(!infoOn) factPanel.style.display = 'none';
+});
+
+searchIconBtn.addEventListener('click', () => {
+  const isOpen = searchWrap.classList.toggle('open');
+  searchIconBtn.classList.toggle('active', isOpen);
+  if(isOpen){
+    searchInput.focus();
+  } else {
+    searchInput.value = '';
+    runSearch();
+  }
+});
+
 muteBtn.addEventListener('click', () => {
   soundOn = !soundOn;
   muteBtn.textContent = soundOn ? 'SOUND ON' : 'SOUND OFF';
@@ -618,22 +575,6 @@ async function loadBests(){
 async function saveBest(key, val){
   try{
     await storage.set('nepal-quiz-best-' + key, String(val));
-  }catch(e){ /* ignore */ }
-}
-
-async function loadLeaderboards(){
-  for(const key of allScopeKeys()){
-    try{
-      const res = await storage.get('nepal-quiz-leaderboard-' + key);
-      if(res && res.value){
-        leaderboards[key] = JSON.parse(res.value);
-      }
-    }catch(e){ /* none saved yet */ }
-  }
-}
-async function saveLeaderboard(key){
-  try{
-    await storage.set('nepal-quiz-leaderboard-' + key, JSON.stringify(leaderboards[key]));
   }catch(e){ /* ignore */ }
 }
 
@@ -666,7 +607,7 @@ async function loadData(){
 }
 
 function showFactPanel(name){
-  if(mode !== 'district' || !DISTRICT_FACTS[name]){
+  if(!infoOn || mode !== 'district' || !DISTRICT_FACTS[name]){
     factPanel.style.display = 'none';
     return;
   }
@@ -826,7 +767,5 @@ mapViewport.addEventListener('wheel', (e) => {
   buildProvinceUI();
   applyDimming();
   await loadBests();
-  await loadLeaderboards();
-  renderLeaderboard();
   pickNext();
 })();

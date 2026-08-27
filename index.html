@@ -21,10 +21,16 @@
         <div class="best-num" id="bestNum">0</div>
         <div class="best-label">Best</div>
       </div>
+      <button class="search-icon-btn" id="searchIconBtn" title="Search">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="21" y1="21" x2="16.2" y2="16.2"></line>
+        </svg>
+      </button>
     </div>
   </div>
 
-  <div class="search-wrap">
+  <div class="search-wrap" id="searchWrap">
     <input class="search-input" id="searchInput" type="text" placeholder="Type a district name to find it…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
     <div class="search-msg" id="searchMsg"></div>
   </div>
@@ -86,16 +92,12 @@
         Shadowing
         <div class="switch" id="shadowSwitch"><div class="knob"></div></div>
       </div>
+      <div class="shadow-toggle">
+        Info
+        <div class="switch on" id="infoSwitch"><div class="knob"></div></div>
+      </div>
       <button class="mute-btn active" id="muteBtn">SOUND ON</button>
     </div>
-  </div>
-
-  <div class="leaderboard">
-    <div class="lb-head">
-      <div class="lb-title">Top 5 Streaks</div>
-      <div class="lb-scope" id="lbScopeLabel">All Nepal</div>
-    </div>
-    <div id="lbList"></div>
   </div>
 </div>
 
