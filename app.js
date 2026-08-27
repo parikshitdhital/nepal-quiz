@@ -783,7 +783,15 @@ mapViewport.addEventListener('pointermove', (e) => {
 function endPointer(e){
   activePointers.delete(e.pointerId);
   if(activePointers.size < 2) pinchStartDist = 0;
-  if(activePointers.size === 0) panStart = null;
+  if(activePointers.size === 1){
+    // A pinch just ended with one finger lifted first (the normal way people release a pinch).
+    // Re-anchor the pan reference to the CURRENT zoomed viewBox and the surviving finger's
+    // current position — otherwise it snaps back to wherever that finger was before the zoom.
+    const remaining = [...activePointers.values()][0];
+    panStart = { screenX: remaining.x, screenY: remaining.y, vbX: vb.x, vbY: vb.y };
+  } else if(activePointers.size === 0){
+    panStart = null;
+  }
 }
 mapViewport.addEventListener('pointerup', endPointer);
 mapViewport.addEventListener('pointercancel', endPointer);
