@@ -660,7 +660,19 @@ mapViewport.addEventListener('pointermove', (e) => {
     if(pinchStartDist > 0){
       let newScale = pinchStartScale * (newDist / pinchStartDist);
       newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, newScale));
+
+      const rect = mapViewport.getBoundingClientRect();
+      const mid = midpoint(pts[0], pts[1]);
+      const midRelX = mid.x - rect.left;
+      const midRelY = mid.y - rect.top;
+
+      // Keep the point under the fingers fixed in place while scale changes
+      const contentX = (midRelX - mapX) / mapScale;
+      const contentY = (midRelY - mapY) / mapScale;
       mapScale = newScale;
+      mapX = midRelX - contentX * mapScale;
+      mapY = midRelY - contentY * mapScale;
+
       clampPan();
       applyMapTransform();
     }
@@ -681,12 +693,22 @@ mapViewport.addEventListener('pointerup', endPointer);
 mapViewport.addEventListener('pointercancel', endPointer);
 mapViewport.addEventListener('pointerleave', endPointer);
 
-// Desktop scroll-wheel zoom, centered roughly on cursor
+// Desktop scroll-wheel zoom, centered on cursor position
 mapViewport.addEventListener('wheel', (e) => {
   e.preventDefault();
   const delta = e.deltaY < 0 ? 1.1 : 0.9;
   let newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, mapScale * delta));
+
+  const rect = mapViewport.getBoundingClientRect();
+  const cursorX = e.clientX - rect.left;
+  const cursorY = e.clientY - rect.top;
+  const contentX = (cursorX - mapX) / mapScale;
+  const contentY = (cursorY - mapY) / mapScale;
+
   mapScale = newScale;
+  mapX = cursorX - contentX * mapScale;
+  mapY = cursorY - contentY * mapScale;
+
   clampPan();
   applyMapTransform();
 }, { passive:false });
