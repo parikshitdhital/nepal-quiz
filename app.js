@@ -31,6 +31,7 @@ const bestNumEl = document.getElementById('bestNum');
 const bestInlineEl = document.getElementById('bestInline');
 const toastEl = document.getElementById('toast');
 const tapLabelEl = document.getElementById('tapLabel');
+const reactionPop = document.getElementById('reactionPop');
 const muteBtn = document.getElementById('muteBtn');
 const provTab = document.getElementById('provTab');
 const provPanel = document.getElementById('provPanel');
@@ -99,6 +100,57 @@ function playCorrect(){
 }
 function playWrong(){
   playTone(180, 0.28, 'sawtooth', 0.12);
+}
+
+// ---- Reaction pop-ups (word banks + streak-milestone specials) ----
+const CORRECT_WORDS = [
+  "Bingo!!!","Yayyy!!!","Nailed it!","Boom!","Yasss!","Sharp!","Nice one!",
+  "Ka-ching!","Correctamundo!","Smooth!","You got it!","Legend!","Sweet!",
+  "That's it!","Bang on!","Woohoo!","Spot on!","Ez!","Crushed it!","Yes!!",
+  "Perfect!","Solid!","Slick!","Score!","Zing!","Boom baby!","Chef's kiss!",
+  "Too easy!","On point!","Clean hit!"
+];
+const WRONG_WORDS = [
+  "Oops!","Yikes!","Seriously?","Not quite!","Nope!","Whoops!","Aw man!",
+  "So close!","Nah!","Hmm, no.","Not this time!","Argh!","Miss!","Try again!",
+  "Wrong turn!","Off by a mile!","Ouch!","Nuh-uh!","Way off!","Uh-oh!",
+  "Nope, not it.","Big miss!","Wrong district!","That's a no.","Swing and a miss!",
+  "Close, but no.","Nada.","Wrongo!","Not even close!","Whiff!"
+];
+const MILESTONE_WORDS = {
+  5: "ON A ROLL!", 10: "ON FIRE! 🔥", 15: "UNREAL!", 20: "UNSTOPPABLE!",
+  25: "LEGENDARY!", 50: "GODLIKE!", 100: "certified nepal expert."
+};
+
+let lastCorrectWord = null, lastWrongWord = null;
+
+function pickWord(bank, lastPicked){
+  let word = bank[Math.floor(Math.random() * bank.length)];
+  if(bank.length > 1){
+    while(word === lastPicked){
+      word = bank[Math.floor(Math.random() * bank.length)];
+    }
+  }
+  return word;
+}
+
+function showReaction(kind, streakAfter){
+  const milestoneWord = (kind === 'correct') ? MILESTONE_WORDS[streakAfter] : null;
+  let word;
+  if(milestoneWord){
+    word = milestoneWord;
+  } else if(kind === 'correct'){
+    word = pickWord(CORRECT_WORDS, lastCorrectWord);
+    lastCorrectWord = word;
+  } else {
+    word = pickWord(WRONG_WORDS, lastWrongWord);
+    lastWrongWord = word;
+  }
+
+  reactionPop.textContent = word;
+  reactionPop.className = 'reaction-pop'; // clear animation state
+  void reactionPop.offsetWidth; // force reflow so the animation restarts even on rapid re-trigger
+  reactionPop.classList.add(kind);
 }
 
 // ---- Build SVG (colored by province for border clarity) ----
@@ -314,6 +366,7 @@ function handleTap(name, el){
     feedbackEl.className = 'feedback ok';
     playCorrect();
     streaks[key]++;
+    showReaction('correct', streaks[key]);
     if(streaks[key] > bests[key]){
       bests[key] = streaks[key];
       saveBest(key, bests[key]);
@@ -325,6 +378,7 @@ function handleTap(name, el){
     feedbackEl.textContent = 'That was ' + name + ' — ' + currentTarget + ' is highlighted';
     feedbackEl.className = 'feedback bad';
     playWrong();
+    showReaction('wrong', null);
     if(streaks[key] > 0) maybeAddToLeaderboard(key, streaks[key]);
     streaks[key] = 0;
   }
