@@ -590,10 +590,10 @@ const storage = {
 // ---- Data loading ----
 async function loadData(){
   const [districtsData, provinceData, citiesData, landmarksData] = await Promise.all([
-    fetch('data/districts.json').then(r => r.json()),
-    fetch('data/provinces.json').then(r => r.json()),
-    fetch('data/cities.json').then(r => r.json()),
-    fetch('data/landmarks.json').then(r => r.json()),
+    fetch('districts.json').then(r => r.json()),
+    fetch('provinces.json').then(r => r.json()),
+    fetch('cities.json').then(r => r.json()),
+    fetch('landmarks.json').then(r => r.json()),
   ]);
   DATA = districtsData;
   PROVINCE_OF = provinceData;
