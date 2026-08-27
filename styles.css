@@ -350,6 +350,54 @@
   .tap-label.show{opacity:1;}
 
   /* Footer / controls */
+  /* Did-You-Know fact panel */
+  .fact-panel{
+    background:linear-gradient(180deg, var(--bg-panel), #142420);
+    border:1px solid var(--ridge);
+    border-left:3px solid var(--gold);
+    border-radius:10px;
+    padding:12px 14px;
+    margin-top:10px;
+    animation: factFadeIn 0.3s ease;
+  }
+  @keyframes factFadeIn{
+    from{ opacity:0; transform:translateY(4px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .fact-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:4px;
+  }
+  .fact-district{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:16px;
+    color:var(--gold-soft);
+    letter-spacing:0.3px;
+  }
+  .fact-hq{
+    font-size:10px;
+    color:var(--muted);
+    letter-spacing:0.5px;
+  }
+  .fact-stats{
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:6px;
+    letter-spacing:0.3px;
+  }
+  .fact-dot{
+    margin:0 6px;
+    color:var(--ridge);
+  }
+  .fact-text{
+    font-size:13px;
+    line-height:1.5;
+    color:var(--ink);
+  }
+
   .footer{
     display:flex;
     justify-content:space-between;

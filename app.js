@@ -1,5 +1,5 @@
 
-let DATA, PROVINCE_OF, CITIES, LANDMARKS;
+let DATA, PROVINCE_OF, CITIES, LANDMARKS, DISTRICT_FACTS;
 
 // Province identity colors (borders/badges/streak pills). 0 = All Nepal scope.
 const PROV_COLORS = {
@@ -47,6 +47,12 @@ const lbList = document.getElementById('lbList');
 const lbScopeLabel = document.getElementById('lbScopeLabel');
 const searchInput = document.getElementById('searchInput');
 const searchMsg = document.getElementById('searchMsg');
+const factPanel = document.getElementById('factPanel');
+const factDistrict = document.getElementById('factDistrict');
+const factHq = document.getElementById('factHq');
+const factPop = document.getElementById('factPop');
+const factArea = document.getElementById('factArea');
+const factText = document.getElementById('factText');
 
 let mode = 'district';
 let scope = 0; // current province scope, 0 = All Nepal
@@ -325,6 +331,7 @@ function handleTap(name, el){
   appearedCounts[appearedKey(currentTarget)] = (appearedCounts[appearedKey(currentTarget)] || 0) + 1;
   updateScores();
   refreshShadowLabels();
+  showFactPanel(currentTarget);
 
   setTimeout(() => {
     unlockTapping();
@@ -396,6 +403,7 @@ function selectMode(m){
   applyDimming();
   updateScores();
   renderLeaderboard();
+  factPanel.style.display = 'none';
   lastAsked = null;
   pickNext();
 }
@@ -589,16 +597,32 @@ const storage = {
 
 // ---- Data loading ----
 async function loadData(){
-  const [districtsData, provinceData, citiesData, landmarksData] = await Promise.all([
+  const [districtsData, provinceData, citiesData, landmarksData, factsData] = await Promise.all([
     fetch('districts.json').then(r => r.json()),
     fetch('provinces.json').then(r => r.json()),
     fetch('cities.json').then(r => r.json()),
     fetch('landmarks.json').then(r => r.json()),
+    fetch('facts.json').then(r => r.json()),
   ]);
   DATA = districtsData;
   PROVINCE_OF = provinceData;
   CITIES = citiesData;
   LANDMARKS = landmarksData;
+  DISTRICT_FACTS = factsData;
+}
+
+function showFactPanel(name){
+  if(mode !== 'district' || !DISTRICT_FACTS[name]){
+    factPanel.style.display = 'none';
+    return;
+  }
+  const [hq, pop, area, fact] = DISTRICT_FACTS[name];
+  factDistrict.textContent = name;
+  factHq.textContent = 'HQ: ' + hq;
+  factPop.textContent = pop.toLocaleString() + ' people';
+  factArea.textContent = area.toLocaleString() + ' km²';
+  factText.textContent = fact;
+  factPanel.style.display = '';
 }
 
 // ---- Map pinch-zoom / pan (isolated to the map viewport, doesn't touch page zoom) ----
