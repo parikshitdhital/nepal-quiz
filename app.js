@@ -16,8 +16,8 @@ const PROV_LABEL = {
   0:'Provinces Mode',1:'Province 1',2:'Province 2',3:'Province 3',
   4:'Province 4',5:'Province 5',6:'Province 6',7:'Province 7'
 };
-const MODE_LABEL = { district:'Districts', city:'Cities', landmark:'Landmarks' };
-const MODE_COLOR = { district:'#c9a24b', city:'#7ab8e0', landmark:'#c48fe0' };
+const MODE_LABEL = { district:'Districts', city:'Cities', landmark:'Landmarks', headquarters:'Headquarters' };
+const MODE_COLOR = { district:'#c9a24b', city:'#7ab8e0', landmark:'#c48fe0', headquarters:'#e07a63' };
 
 let districts; // populated after data loads
 
@@ -25,6 +25,7 @@ const svg = document.getElementById('map');
 const mapViewport = document.getElementById('mapViewport');
 const zoomResetBtn = document.getElementById('zoomReset');
 const promptEl = document.getElementById('promptName');
+const promptLabelEl = document.getElementById('promptLabel');
 const feedbackEl = document.getElementById('feedback');
 const streakNumEl = document.getElementById('streakNum');
 const bestNumEl = document.getElementById('bestNum');
@@ -45,6 +46,8 @@ const modeTabLabel = document.getElementById('modeTabLabel');
 const modeTabDot = document.getElementById('modeTabDot');
 const shadowSwitch = document.getElementById('shadowSwitch');
 const infoSwitch = document.getElementById('infoSwitch');
+const labelsSwitch = document.getElementById('labelsSwitch');
+const labelsToggleWrap = document.getElementById('labelsToggleWrap');
 const searchIconBtn = document.getElementById('searchIconBtn');
 const searchWrap = document.getElementById('searchWrap');
 const searchInput = document.getElementById('searchInput');
@@ -63,6 +66,7 @@ let bests   = {};
 let soundOn = true;
 let shadowOn = false;
 let infoOn = true;
+let labelsOn = false;
 let currentTarget = null;
 let lastAsked = null;
 let locked = false;
@@ -224,19 +228,25 @@ function markerFor(layerClass, name){
   return svg.querySelector(`circle.marker.${layerClass}[data-name="${CSS.escape(name)}"]`);
 }
 function elementFor(name){
-  if(mode === 'district') return pathFor(name);
+  if(mode === 'district' || mode === 'headquarters') return pathFor(name);
   if(mode === 'city') return markerFor('city-layer', name);
   return markerFor('landmark-layer', name);
 }
 function currentItemSet(){
-  if(mode === 'district') return districts;
+  if(mode === 'district' || mode === 'headquarters') return districts;
   if(mode === 'city') return CITIES;
   return LANDMARKS;
 }
 function itemProvince(name){
-  if(mode === 'district') return PROVINCE_OF[name] || 0;
+  if(mode === 'district' || mode === 'headquarters') return PROVINCE_OF[name] || 0;
   const item = currentItemSet().find(x => x.name === name);
   return item ? item.prov : 0;
+}
+
+function coreName(raw){
+  // strips a parenthetical qualifier, e.g. "Bhadrapur (Chandragadhi)" -> "Bhadrapur"
+  const idx = raw.indexOf('(');
+  return (idx === -1 ? raw : raw.slice(0, idx)).trim();
 }
 
 function shade(hex, amt){
@@ -253,17 +263,14 @@ function pathFor(name){
 function poolForScope(){
   const set = currentItemSet();
   if(scope === 0) return set;
-  if(mode === 'district') return set.filter(d => PROVINCE_OF[d.name] === scope);
+  if(mode === 'district' || mode === 'headquarters') return set.filter(d => PROVINCE_OF[d.name] === scope);
   return set.filter(d => d.prov === scope);
 }
 
 function applyLayerVisibility(){
-  const showDistrictLayer = true; // districts always visible as base or as active quiz layer
+  const districtInteractiveMode = (mode === 'district' || mode === 'headquarters');
   svg.querySelectorAll('path.district').forEach(p => {
-    p.classList.toggle('bg-mode', mode !== 'district');
-  });
-  svg.querySelectorAll('text.district-label').forEach(l => {
-    if(mode !== 'district') l.classList.remove('show');
+    p.classList.toggle('bg-mode', !districtInteractiveMode);
   });
   svg.querySelectorAll('.city-layer').forEach(el => {
     el.style.display = (mode === 'city') ? '' : 'none';
@@ -277,7 +284,7 @@ function applyDimming(){
   applyLayerVisibility();
   const pool = new Set(poolForScope().map(d=>d.name));
 
-  if(mode === 'district'){
+  if(mode === 'district' || mode === 'headquarters'){
     svg.querySelectorAll('path.district').forEach(p=>{
       const name = p.getAttribute('data-name');
       p.classList.toggle('dimmed', !pool.has(name));
@@ -293,16 +300,20 @@ function applyDimming(){
 }
 
 function refreshShadowLabels(){
-  if(mode !== 'district'){
-    svg.querySelectorAll('text.district-label').forEach(l => l.classList.remove('show'));
-    return;
-  }
   const pool = new Set(poolForScope().map(d=>d.name));
+  const labelsEligible = (mode === 'city' || mode === 'landmark' || mode === 'headquarters');
   districts.forEach(d => {
     const lbl = labelFor(d.name);
     const inScope = pool.has(d.name);
-    const seen = (appearedCounts[appearedKey(d.name)] || 0) > 0;
-    lbl.classList.toggle('show', shadowOn && inScope && seen);
+    let show = false;
+    if(mode === 'district' || mode === 'headquarters'){
+      const seen = (appearedCounts[appearedKey(d.name)] || 0) > 0;
+      show = shadowOn && inScope && seen;
+    }
+    if(labelsOn && labelsEligible && inScope){
+      show = true;
+    }
+    lbl.classList.toggle('show', show);
   });
 }
 
@@ -323,7 +334,13 @@ function pickNext(){
 
   lastAsked = choice.name;
   currentTarget = choice.name;
-  promptEl.textContent = choice.name;
+  if(mode === 'headquarters' && DISTRICT_FACTS[choice.name]){
+    promptLabelEl.textContent = 'Tap the district whose HQ is';
+    promptEl.textContent = coreName(DISTRICT_FACTS[choice.name][0]);
+  } else {
+    promptLabelEl.textContent = 'Tap on';
+    promptEl.textContent = choice.name;
+  }
   feedbackEl.textContent = '';
   feedbackEl.className = 'feedback';
   locked = false;
@@ -434,7 +451,7 @@ function selectScope(p){
 
 // ---- Mode selector UI ----
 function buildModeUI(){
-  ['district','city','landmark'].forEach(m => {
+  ['district','city','landmark','headquarters'].forEach(m => {
     const opt = document.createElement('div');
     opt.className = 'prov-opt' + (m===mode ? ' active' : '');
     opt.setAttribute('data-mode', m);
@@ -455,6 +472,15 @@ function selectMode(m){
   applyDimming();
   updateScores();
   factPanel.style.display = 'none';
+
+  const labelsEligible = (m === 'city' || m === 'landmark' || m === 'headquarters');
+  labelsToggleWrap.style.display = labelsEligible ? '' : 'none';
+  if(!labelsEligible && labelsOn){
+    labelsOn = false;
+    labelsSwitch.classList.remove('on');
+    refreshShadowLabels();
+  }
+
   lastAsked = null;
   pickNext();
 }
@@ -538,6 +564,12 @@ infoSwitch.addEventListener('click', () => {
   if(!infoOn) factPanel.style.display = 'none';
 });
 
+labelsSwitch.addEventListener('click', () => {
+  labelsOn = !labelsOn;
+  labelsSwitch.classList.toggle('on', labelsOn);
+  refreshShadowLabels();
+});
+
 searchIconBtn.addEventListener('click', () => {
   const isOpen = searchWrap.classList.toggle('open');
   searchIconBtn.classList.toggle('active', isOpen);
@@ -557,7 +589,7 @@ muteBtn.addEventListener('click', () => {
 });
 
 // ---- Persistence ----
-const ALL_MODES = ['district','city','landmark'];
+const ALL_MODES = ['district','city','landmark','headquarters'];
 function allScopeKeys(){
   const keys = [];
   ALL_MODES.forEach(m => { for(let p=0;p<=7;p++) keys.push(m+':'+p); });
@@ -607,7 +639,7 @@ async function loadData(){
 }
 
 function showFactPanel(name){
-  if(!infoOn || mode !== 'district' || !DISTRICT_FACTS[name]){
+  if(!infoOn || (mode !== 'district' && mode !== 'headquarters') || !DISTRICT_FACTS[name]){
     factPanel.style.display = 'none';
     return;
   }

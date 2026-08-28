@@ -42,7 +42,7 @@
         <span class="chev">▾</span>
       </button>
       <div class="prov-panel" id="modePanel">
-        <div class="prov-grid" id="modeGrid" style="grid-template-columns:repeat(3,1fr);"></div>
+        <div class="prov-grid" id="modeGrid" style="grid-template-columns:repeat(2,1fr);"></div>
       </div>
     </div>
 
@@ -58,7 +58,7 @@
   </div>
 
   <div class="prompt">
-    <div class="prompt-label">Tap on</div>
+    <div class="prompt-label" id="promptLabel">Tap on</div>
     <div class="prompt-name" id="promptName">—</div>
     <div class="feedback" id="feedback"></div>
   </div>
@@ -87,7 +87,7 @@
 
   <div class="footer">
     <div class="best-line">Longest streak (this scope): <b id="bestInline">0</b></div>
-    <div style="display:flex;gap:10px;align-items:center;">
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
       <div class="shadow-toggle">
         Shadowing
         <div class="switch" id="shadowSwitch"><div class="knob"></div></div>
@@ -95,6 +95,10 @@
       <div class="shadow-toggle">
         Info
         <div class="switch on" id="infoSwitch"><div class="knob"></div></div>
+      </div>
+      <div class="shadow-toggle" id="labelsToggleWrap" style="display:none;">
+        Labels
+        <div class="switch" id="labelsSwitch"><div class="knob"></div></div>
       </div>
       <button class="mute-btn active" id="muteBtn">SOUND ON</button>
     </div>
