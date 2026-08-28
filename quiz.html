@@ -46,6 +46,16 @@
       </div>
     </div>
 
+    <div class="tab-col compact-col">
+      <button class="prov-tab compact" id="recallTab">
+        <span><span class="dot" id="recallTabDot" style="background:var(--muted)"></span><span id="recallTabLabel">Recall Mode</span></span>
+        <span class="chev">▾</span>
+      </button>
+      <div class="prov-panel" id="recallPanel_dropdown">
+        <div class="prov-grid" id="recallGrid" style="grid-template-columns:repeat(2,1fr);"></div>
+      </div>
+    </div>
+
     <div class="tab-col wide-col">
       <button class="prov-tab compact" id="provTab">
         <span><span class="dot" id="provTabDot" style="background:var(--gold)"></span><span id="provTabLabel">Provinces Mode</span></span>
@@ -61,6 +71,12 @@
     <div class="prompt-label" id="promptLabel">Tap on</div>
     <div class="prompt-name" id="promptName">—</div>
     <div class="feedback" id="feedback"></div>
+  </div>
+
+  <div class="recall-panel" id="recallPanel">
+    <input class="recall-input" id="recallInput" type="text" placeholder="Type your answer…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    <button class="recall-check-btn" id="recallCheckBtn">Check</button>
+    <div class="recall-suggestions" id="recallSuggestions"></div>
   </div>
 
   <div class="map-frame">

@@ -44,6 +44,15 @@ const modePanel = document.getElementById('modePanel');
 const modeGrid = document.getElementById('modeGrid');
 const modeTabLabel = document.getElementById('modeTabLabel');
 const modeTabDot = document.getElementById('modeTabDot');
+const recallTab = document.getElementById('recallTab');
+const recallDropdown = document.getElementById('recallPanel_dropdown');
+const recallGrid = document.getElementById('recallGrid');
+const recallTabLabel = document.getElementById('recallTabLabel');
+const recallTabDot = document.getElementById('recallTabDot');
+const recallPanel = document.getElementById('recallPanel');
+const recallInput = document.getElementById('recallInput');
+const recallCheckBtn = document.getElementById('recallCheckBtn');
+const recallSuggestions = document.getElementById('recallSuggestions');
 const shadowSwitch = document.getElementById('shadowSwitch');
 const infoSwitch = document.getElementById('infoSwitch');
 const labelsSwitch = document.getElementById('labelsSwitch');
@@ -67,6 +76,10 @@ let soundOn = true;
 let shadowOn = false;
 let infoOn = true;
 let labelsOn = false;
+let interactionType = 'tap'; // 'tap' | 'recall'
+let tapCategory = 'district';
+let recallCategory = 'district';
+let recallLocked = false;
 let currentTarget = null;
 let lastAsked = null;
 let locked = false;
@@ -334,12 +347,29 @@ function pickNext(){
 
   lastAsked = choice.name;
   currentTarget = choice.name;
-  if(mode === 'headquarters' && DISTRICT_FACTS[choice.name]){
-    promptLabelEl.textContent = 'Tap the district whose HQ is';
-    promptEl.textContent = coreName(DISTRICT_FACTS[choice.name][0]);
+  clearRecallGlow();
+
+  if(interactionType === 'recall'){
+    recallInput.value = '';
+    recallSuggestions.innerHTML = '';
+    if(mode === 'headquarters'){
+      promptLabelEl.textContent = 'Type the headquarters of';
+      promptEl.textContent = choice.name;
+    } else {
+      const singular = MODE_LABEL[mode].replace(/s$/, '').toLowerCase();
+      promptLabelEl.textContent = 'Type the highlighted ' + singular;
+      promptEl.textContent = '';
+      const el = elementFor(choice.name);
+      if(el) el.classList.add('recall-glow');
+    }
   } else {
-    promptLabelEl.textContent = 'Tap on';
-    promptEl.textContent = choice.name;
+    if(mode === 'headquarters' && DISTRICT_FACTS[choice.name]){
+      promptLabelEl.textContent = 'Tap the district whose HQ is';
+      promptEl.textContent = coreName(DISTRICT_FACTS[choice.name][0]);
+    } else {
+      promptLabelEl.textContent = 'Tap on';
+      promptEl.textContent = choice.name;
+    }
   }
   feedbackEl.textContent = '';
   feedbackEl.className = 'feedback';
@@ -367,6 +397,7 @@ function showTapLabel(name){
 }
 
 function handleTap(name, el){
+  if(interactionType === 'recall') return; // map isn't the answer surface in Recall Mode
   if(locked) return;
   locked = true;
   resetPaintedPaths(); // clear previous question's highlight now that a new attempt is happening
@@ -462,6 +493,8 @@ function buildModeUI(){
 }
 
 function selectMode(m){
+  interactionType = 'tap';
+  tapCategory = m;
   mode = m;
   modeTabLabel.textContent = MODE_LABEL[m];
   modeTabDot.style.background = MODE_COLOR[m];
@@ -469,6 +502,7 @@ function selectMode(m){
     o.classList.toggle('active', o.getAttribute('data-mode') === m);
   });
   closeModePanel();
+  exitRecallUI();
   applyDimming();
   updateScores();
   factPanel.style.display = 'none';
@@ -484,6 +518,169 @@ function selectMode(m){
   lastAsked = null;
   pickNext();
 }
+
+function buildRecallModeUI(){
+  ['district','city','landmark','headquarters'].forEach(m => {
+    const opt = document.createElement('div');
+    opt.className = 'prov-opt' + (m===recallCategory ? ' active' : '');
+    opt.setAttribute('data-mode', m);
+    opt.innerHTML = `<div class="sw" style="background:${MODE_COLOR[m]}"></div><div>${MODE_LABEL[m]}</div>`;
+    opt.addEventListener('click', () => selectRecallMode(m));
+    recallGrid.appendChild(opt);
+  });
+}
+
+function selectRecallMode(m){
+  interactionType = 'recall';
+  recallCategory = m;
+  mode = m;
+  recallTabLabel.textContent = MODE_LABEL[m];
+  recallTabDot.style.background = MODE_COLOR[m];
+  document.querySelectorAll('#recallGrid .prov-opt').forEach(o=>{
+    o.classList.toggle('active', o.getAttribute('data-mode') === m);
+  });
+  closeRecallDropdown();
+  enterRecallUI();
+  applyDimming();
+  updateScores();
+  factPanel.style.display = 'none';
+
+  const labelsEligible = (m === 'city' || m === 'landmark' || m === 'headquarters');
+  labelsToggleWrap.style.display = labelsEligible ? '' : 'none';
+  if(!labelsEligible && labelsOn){
+    labelsOn = false;
+    labelsSwitch.classList.remove('on');
+    refreshShadowLabels();
+  }
+
+  lastAsked = null;
+  pickNext();
+  recallInput.focus();
+}
+
+function enterRecallUI(){
+  recallPanel.classList.add('show');
+}
+function exitRecallUI(){
+  recallPanel.classList.remove('show');
+  clearRecallGlow();
+  recallInput.value = '';
+  recallSuggestions.innerHTML = '';
+}
+function clearRecallGlow(){
+  svg.querySelectorAll('.recall-glow').forEach(el => el.classList.remove('recall-glow'));
+}
+
+function toggleRecallDropdown(){
+  const isOpen = recallDropdown.classList.toggle('open');
+  recallTab.classList.toggle('open', isOpen);
+}
+function closeRecallDropdown(){
+  recallDropdown.classList.remove('open');
+  recallTab.classList.remove('open');
+}
+recallTab.addEventListener('click', toggleRecallDropdown);
+
+function expectedRecallAnswer(){
+  if(mode === 'headquarters' && DISTRICT_FACTS[currentTarget]){
+    return coreName(DISTRICT_FACTS[currentTarget][0]);
+  }
+  return currentTarget;
+}
+
+function recallPool(){
+  if(mode === 'headquarters'){
+    return Object.values(DISTRICT_FACTS).map(f => coreName(f[0]));
+  }
+  return currentItemSet().map(x => x.name);
+}
+
+function submitRecall(typedRaw){
+  if(recallLocked || interactionType !== 'recall') return;
+  const typed = (typedRaw || '').trim();
+  if(!typed) return;
+
+  recallLocked = true;
+  recallInput.disabled = true;
+  recallCheckBtn.disabled = true;
+  recallSuggestions.innerHTML = '';
+
+  const expected = expectedRecallAnswer();
+  const key = scopeKey();
+  ensureScopeState(key);
+  const isCorrect = typed.toLowerCase() === expected.toLowerCase();
+
+  if(mode !== 'headquarters'){
+    const el = elementFor(currentTarget);
+    if(el){ el.classList.remove('recall-glow'); el.classList.add('correct'); }
+  }
+
+  if(isCorrect){
+    feedbackEl.textContent = 'Correct — ' + expected;
+    feedbackEl.className = 'feedback ok';
+    playCorrect();
+    streaks[key]++;
+    showReaction('correct', streaks[key]);
+    if(streaks[key] > bests[key]){
+      bests[key] = streaks[key];
+      saveBest(key, bests[key]);
+      showToast('New best (' + MODE_LABEL[mode] + ' · ' + PROV_LABEL[scope] + '): ' + bests[key]);
+    }
+  } else {
+    feedbackEl.textContent = 'You typed "' + typed + '" — correct: ' + expected;
+    feedbackEl.className = 'feedback bad';
+    playWrong();
+    showReaction('wrong', null);
+    streaks[key] = 0;
+  }
+
+  appearedCounts[appearedKey(currentTarget)] = (appearedCounts[appearedKey(currentTarget)] || 0) + 1;
+  updateScores();
+  refreshShadowLabels();
+  showFactPanel(currentTarget);
+
+  setTimeout(() => {
+    recallLocked = false;
+    recallInput.disabled = false;
+    recallCheckBtn.disabled = false;
+    pickNext();
+    recallInput.focus();
+  }, 1200);
+}
+
+recallInput.addEventListener('input', () => {
+  const val = recallInput.value.trim().toLowerCase();
+  recallSuggestions.innerHTML = '';
+  if(!val) return;
+  const pool = recallPool();
+  const seen = new Set();
+  const matches = [];
+  for(const n of pool){
+    if(n.toLowerCase().startsWith(val) && !seen.has(n)){
+      seen.add(n);
+      matches.push(n);
+      if(matches.length >= 6) break;
+    }
+  }
+  matches.forEach(name => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'recall-chip';
+    chip.textContent = name;
+    chip.addEventListener('click', () => {
+      recallInput.value = name;
+      submitRecall(name);
+    });
+    recallSuggestions.appendChild(chip);
+  });
+});
+recallInput.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    submitRecall(recallInput.value);
+  }
+});
+recallCheckBtn.addEventListener('click', () => submitRecall(recallInput.value));
 
 function escapeAttr(s){
   return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
@@ -796,6 +993,7 @@ mapViewport.addEventListener('wheel', (e) => {
   buildMap();
   initViewBox();
   buildModeUI();
+  buildRecallModeUI();
   buildProvinceUI();
   applyDimming();
   await loadBests();
