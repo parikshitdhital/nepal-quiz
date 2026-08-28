@@ -13,7 +13,7 @@ const PROV_COLORS = {
   7: '#6fc9c2'  // Sudurpashchim - teal
 };
 const PROV_LABEL = {
-  0:'All Nepal',1:'Province 1',2:'Province 2',3:'Province 3',
+  0:'Provinces Mode',1:'Province 1',2:'Province 2',3:'Province 3',
   4:'Province 4',5:'Province 5',6:'Province 6',7:'Province 7'
 };
 const MODE_LABEL = { district:'Districts', city:'Cities', landmark:'Landmarks' };
