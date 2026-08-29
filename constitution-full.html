@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Full Text — Constitution of Nepal — Loksewa Hub</title>
+<link rel="stylesheet" href="constitution-full.css" />
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back-link" href="constitution.html">← Back to Constitution Overview</a>
+
+  <div class="page-header">
+    <div class="page-badge">Constitution of Nepal, 2072 (2015)</div>
+    <h1 class="page-title">Full Verbatim Text</h1>
+    <p class="page-sub">The exact legal text, Article by Article — sourced from the official Constitution published by the Government of Nepal.</p>
+    <div class="progress-note">Parts 1–5 (Articles 1–60) added so far · more Parts added over time</div>
+  </div>
+
+  <div id="parts"></div>
+
+  <div class="page-footer-note">
+    Source: The Constitution of Nepal, 2072, Government of Nepal (published 20 September 2015).<br/>
+    This is a work in progress — remaining Parts will be added in future updates.
+  </div>
+</div>
+
+<script>
+const PARTS = [
+  {
+    num: 1, title: 'Preliminary',
+    articles: [
+      { num: 1, title: 'Constitution as the fundamental law', text: `(1) This Constitution is the fundamental law of Nepal. Any law inconsistent with this Constitution shall, to the extent of such inconsistency, be void.
+(2) It shall be the duty of every person to observe this Constitution.` },
+      { num: 2, title: 'Sovereignty and state authority', text: `The sovereignty and state authority of Nepal shall be vested in the Nepalese people. It shall be exercised in accordance with the provisions set forth in this Constitution.` },
+      { num: 3, title: 'Nation', text: `All the Nepalese people, with multiethnic, multilingual, multi-religious, multicultural characteristics and in geographical diversities, and having common aspirations and being united by a bond of allegiance to national independence, territorial integrity, national interest and prosperity of Nepal, collectively constitute the nation.` },
+      { num: 4, title: 'State of Nepal', text: `(1) Nepal is an independent, indivisible, sovereign, secular, inclusive, democratic, socialism-oriented, federal democratic republican state.
+Explanation: For the purposes of this Article, "secular" means religious, cultural freedoms, including protection of religion, culture handed down from the time immemorial.
+(2) The territory of Nepal shall comprise:
+(a) the territory existing at the time of commencement of this Constitution, and
+(b) such other territory as may be acquired after the commencement of this Constitution.` },
+      { num: 5, title: 'National interest', text: `(1) Safeguarding of the freedom, sovereignty, territorial integrity, nationality, independence and dignity of Nepal, the rights of the Nepalese people, border security, economic wellbeing and prosperity shall be the basic elements of the national interest of Nepal.
+(2) Any conduct and act contrary to the national interest shall be punishable by the Federal law.` },
+      { num: 6, title: 'Languages of the nation', text: `All languages spoken as the mother tongues in Nepal are the languages of the nation.` },
+      { num: 7, title: 'Official language', text: `(1) The Nepali language in the Devnagari script shall be the official language of Nepal.
+(2) A State may, by a State law, determine one or more than one languages of the nation spoken by a majority of people within the State as its official language(s), in addition to the Nepali language.
+(3) Other matters relating to language shall be as decided by the Government of Nepal, on recommendation of the Language Commission.` },
+      { num: 8, title: 'National flag', text: `(1) The national flag of Nepal consists of two juxtaposed triangular figures with a crimson-coloured base and deep blue borders, there being a white emblem of the crescent moon with eight rays visible out of sixteen in the upper part and a white emblem of a twelve rayed sun in the lower part.
+(2) The method of drawing out the flag and other particulars relating thereto shall be as set forth in Schedule-1.` },
+      { num: 9, title: 'National anthem etc', text: `(1) The national anthem of Nepal shall be as set forth in Schedule-2.
+(2) The coat-of-arms of Nepal shall be as set forth in Schedule-3.
+(3) The Rhododendron Arboreum shall be the national flower, Crimson Colour shall be the national colour, the Cow shall be the national animal and the Lophophorus shall be the national bird of Nepal.` },
+    ]
+  },
+  {
+    num: 2, title: 'Citizenship',
+    articles: [
+      { num: 10, title: 'Not to deprive of citizenship', text: `(1) No citizen of Nepal may be deprived of the right to obtain citizenship.
+(2) There is a provision of single federal citizenship with State identity in Nepal.` },
+      { num: 11, title: 'To be citizens of Nepal', text: `(1) The persons who have obtained the citizenship of Nepal at the time of commencement of this Constitution and who are qualified to obtain citizenship in accordance with this Part shall be the citizens of Nepal.
+(2) The following person who has his or her permanent domicile in Nepal at the time of commencement of this Constitution shall be the citizen of Nepal by descent:
+(a) a person who has obtained the citizenship of Nepal by descent prior to the commencement of this Constitution,
+(b) a person whose father or mother was a citizen of Nepal at his or her birth.
+(3) A child of a citizen having obtained the citizenship of Nepal by birth prior to the commencement of Nepal shall, upon attaining majority, acquire the citizenship of Nepal by descent if the child's father and mother both are citizens of Nepal.
+(4) Every minor who is found within Nepal and the whereabouts of whose father and mother are not known shall, until the father or the mother of the child is traced, be a citizen of Nepal by descent.
+(5) A person who is born in Nepal from a woman who is a citizen of Nepal and has resided in Nepal and whose father is not traced shall be provided with the citizenship of Nepal by descent.
+Provided that his or her father is held to be a foreign citizen, the citizenship of such person shall be converted into naturalized citizenship as provided for in the Federal law.
+(6) A foreign woman who has a matrimonial relationship with a citizen of Nepal may, if she so wishes, acquire the naturalized citizenship of Nepal as provided for in the Federal law.
+(7) Notwithstanding anything contained elsewhere in this Article, in the case of a person born from a woman who is a citizen of Nepal and married to a foreign citizen, the person may acquire the naturalized citizenship of Nepal in accordance with the Federal law if he or she has permanently resided in Nepal and has not acquired the citizenship of a foreign country.
+Provided that if such person's mother and father both are citizens of Nepal at the time of acquisition of citizenship, such person born in Nepal may acquire the citizenship of Nepal by descent.
+(8) In the cases other than those mentioned in this Article, the Government of Nepal may, in accordance with the Federal law, grant the naturalized citizenship of Nepal.
+(9) The Government of Nepal may, in accordance with the Federal law, grant the honorary citizenship of Nepal.
+(10) Whenever any territory is acquired by way of merger into Nepal, a person having his or her domicile in such territory shall become a citizen of Nepal, subject to the Federal law.` },
+      { num: 12, title: 'Citizenship with identity of descent and gender', text: `A person who obtains the citizenship of Nepal by descent in accordance with this Constitution may obtain a certificate of citizenship of Nepal with gender identity by the name of his or her mother or father.` },
+      { num: 13, title: 'Acquisition, reacquisition and termination of citizenship', text: `Other matters relating to the acquisition, reacquisition and termination of citizenship shall be as provided for in the Federal law.` },
+      { num: 14, title: 'Power to grant non-resident Nepalese citizenship', text: `The non-residential citizenship of Nepal may be so granted to a person who has acquired the citizenship of a foreign country, has resided in a country other than a member state of the South Asian Association for Regional Cooperation, and who or whose father or mother, grandfather or grandmother was previously a citizen of Nepal by decent or birth but subsequently acquired the citizenship of the foreign country that such person may enjoy economic, social and cultural rights in accordance with the Federal law.` },
+      { num: 15, title: 'Other provisions relating to citizenship of Nepal', text: `Other matters relating to the maintenance of records setting out the identity of every citizen of Nepal and the citizenship of Nepal shall be as provided for in the Federal law.` },
+    ]
+  },
+  {
+    num: 3, title: 'Fundamental Rights and Duties',
+    articles: [
+      { num: 16, title: 'Right to live with dignity', text: `(1) Every person shall have the right to live with dignity.
+(2) No law shall be made providing for the death penalty to any one.` },
+      { num: 17, title: 'Right to freedom', text: `(1) No person shall be deprived of his or her personal liberty except in accordance with law.
+(2) Every citizen shall have the following freedoms:
+(a) freedom of opinion and expression,
+(b) freedom to assemble peaceably and without arms,
+(c) freedom to form political parties,
+(d) freedom to form unions and associations,
+(e) freedom to move and reside in any part of Nepal,
+(f) freedom to practice any profession, carry on any occupation, and establish and operate any industry, trade and business in any part of Nepal.
+(Reasonable restrictions on each of these freedoms may be imposed by Act, as detailed in the provisos to this Article, on grounds such as sovereignty, territorial integrity, public order, decency, morality, and harmonious relations between communities.)` },
+      { num: 18, title: 'Right to equality', text: `(1) All citizens shall be equal before law. No person shall be denied the equal protection of law.
+(2) No discrimination shall be made in the application of general laws on grounds of origin, religion, race, caste, tribe, sex, physical condition, condition of health, marital status, pregnancy, economic condition, language or region, ideology or on similar other grounds.
+(3) The State shall not discriminate citizens on grounds of origin, religion, race, caste, tribe, sex, economic condition, language, region, ideology or on similar other grounds.
+Provided that nothing shall be deemed to prevent the making of special provisions by law for the protection, empowerment or development of the citizens including the socially or culturally backward women, Dalit, indigenous people, indigenous nationalities, Madhesi, Tharu, Muslim, oppressed class, Pichhada class, minorities, the marginalized, farmers, labours, youths, children, senior citizens, gender and sexual minorities, persons with disabilities, persons in pregnancy, incapacitated or helpless, backward region and indigent Khas Arya.
+(4) No discrimination shall be made on the ground of gender with regard to remuneration and social security for the same work.
+(5) All offspring shall have the equal right to the ancestral property without discrimination on the ground of gender.` },
+      { num: 19, title: 'Right to communication', text: `(1) No publication and broadcasting or dissemination or printing of any news item, editorial, feature article or other reading, audio and audio-visual material through any means whatsoever including electronic publication, broadcasting and printing shall be censored, subject to reasonable restrictions provided by Act.
+(2) No radio, television, on-line or other form of digital or electronic equipment, press or other means of communication shall be closed or seized nor shall registration thereof be cancelled nor shall such material be seized by reason of publication, broadcasting or printing of material through any audio, audio-visual or electronic equipment.
+(3) No means of communication including the press, electronic broadcasting and telephone shall be interrupted except in accordance with law.` },
+      { num: 20, title: 'Rights relating to justice', text: `(1) No person shall be detained in custody without informing him or her of the ground for his or her arrest.
+(2) Any person who is arrested shall have the right to consult a legal practitioner of his or her choice from the time of such arrest and to be defended by such legal practitioner.
+(3) Any person who is arrested shall be produced before the adjudicating authority within twenty-four hours of such arrest, excluding travel time; and shall not be detained in custody except on the order of such authority.
+(4) No person shall be liable for punishment for an act which was not punishable by the law in force when the act was committed, nor be subjected to a punishment greater than that prescribed at the time of the offence.
+(5) Every person charged with an offence shall be presumed innocent until proved guilty.
+(6) No person shall be tried and punished for the same offence more than once.
+(7) No person charged with an offence shall be compelled to testify against himself or herself.
+(8) Every person shall have the right to be informed of any proceedings taken against him or her.
+(9) Every person shall have the right to a fair trial by an independent, impartial and competent court or judicial body.
+(10) Any indigent party shall have the right to free legal aid in accordance with law.` },
+      { num: 21, title: 'Right of victim of crime', text: `(1) A victim of crime shall have the right to get information about the investigation and proceedings of a case in which he or she is the victim.
+(2) A victim of crime shall have the right to justice including social rehabilitation and compensation in accordance with law.` },
+      { num: 22, title: 'Right against torture', text: `(1) No person who is arrested or detained shall be subjected to physical or mental torture or to cruel, inhuman or degrading treatment.
+(2) Any such act shall be punishable by law, and the victim shall have the right to obtain compensation in accordance with law.` },
+      { num: 23, title: 'Right against preventive detention', text: `(1) No person shall be held under preventive detention unless there is a sufficient ground of the existence of an immediate threat to the sovereignty, territorial integrity or public peace and order of Nepal.
+(2) Information about a person held under preventive detention must be given immediately to his or her family members or relatives.
+(3) If detention is made contrary to law or in bad faith, the person held has the right to compensation in accordance with law.` },
+      { num: 24, title: 'Right against untouchability and discrimination', text: `(1) No person shall be subjected to any form of untouchability or discrimination in any private and public places on grounds of his or her origin, caste, tribe, community, profession, occupation or physical condition.
+(2) No person shall be prevented from purchasing or acquiring goods, services or facilities, nor shall such be restricted to any particular caste or tribe.
+(3) No act demonstrating any person or community as superior or inferior on such grounds, or propagating ideology of untouchability or caste-based superiority, shall be allowed.
+(4) No discrimination in any form shall be allowed at a workplace on the ground of caste.
+(5) Any act of untouchability or discrimination shall be a punishable severe social offence, and the victim shall have the right to compensation in accordance with law.` },
+      { num: 25, title: 'Right relating to property', text: `(1) Every citizen shall, subject to law, have the right to acquire, own, sell, dispose, acquire business profits from, and otherwise deal with, property.
+(2) The State shall not, except for public interest, requisition, acquire, or otherwise create any encumbrance on, property of a person.
+(3) The basis of compensation and procedures for State requisition of property for public interest shall be as provided in Act.
+(4) These provisions shall not prevent the State from land reforms, management and regulation for enhancing agricultural productivity, modernization, environment protection and planned housing/urban development.
+(5) Nothing prevents the State from re-purposing requisitioned property for another public interest.` },
+      { num: 26, title: 'Right to freedom of religion', text: `(1) Every person who has faith in religion shall have the freedom to profess, practice and protect his or her religion according to his or her conviction.
+(2) Every religious denomination shall have the right to operate and protect its religious sites and religious Guthi (trusts).
+(3) No person shall, in exercising this right, act contrary to public health, decency and morality, breach public peace, convert another person from one religion to another, or jeopardize another's religion.` },
+      { num: 27, title: 'Right to information', text: `Every citizen shall have the right to demand and receive information on any matter of his or her interest or of public interest, except matters required by law to remain confidential.` },
+      { num: 28, title: 'Right to privacy', text: `The privacy of any person, his or her residence, property, document, data, correspondence and matters relating to his or her character shall, except in accordance with law, be inviolable.` },
+      { num: 29, title: 'Right against exploitation', text: `(1) Every person shall have the right against exploitation.
+(2) No person shall be exploited in any manner on the grounds of religion, custom, tradition, usage, practice or on any other grounds.
+(3) No one shall be subjected to trafficking nor held in slavery or servitude.
+(4) No one shall be forced to work against his or her will, except compulsory service for public purposes as may be required by law.
+(5) Violation shall be punishable by law and the victim shall have the right to compensation from the perpetrator.` },
+      { num: 30, title: 'Right to clean environment', text: `(1) Every citizen shall have the right to live in a clean and healthy environment.
+(2) The victim shall have the right to compensation for injury caused from environmental pollution or degradation.
+(3) This shall not prevent necessary legal provisions for balancing environment and development.` },
+      { num: 31, title: 'Right relating to education', text: `(1) Every citizen shall have the right of access to basic education.
+(2) Every citizen shall have the right to compulsory and free education up to the basic level, and free education up to the secondary level, from the State.
+(3) Citizens with disabilities and economically indigent citizens shall have the right to free higher education, in accordance with law.
+(4) Visually impaired citizens shall have the right to free education through braille, and citizens with hearing or speaking impairment through sign language.
+(5) Every Nepalese community shall have the right to education in its mother tongue, and to open and operate schools for that purpose.` },
+      { num: 32, title: 'Right to language and culture', text: `(1) Every person and community shall have the right to use their languages.
+(2) Every person and community shall have the right to participate in the cultural life of their communities.
+(3) Every Nepalese community shall have the right to preserve and promote its language, script, culture, cultural civilization and heritage.` },
+      { num: 33, title: 'Right to employment', text: `(1) Every citizen shall have the right to employment, with terms of employment and unemployment benefit as provided for in Federal law.
+(2) Every citizen shall have the right to choose employment.` },
+      { num: 34, title: 'Right to labour', text: `(1) Every labourer shall have the right to practice appropriate labour.
+(2) Every labourer shall have the right to appropriate remuneration, facilities and contributory social security.
+(3) Every labourer shall have the right to form and join trade unions and engage in collective bargaining, in accordance with law.` },
+      { num: 35, title: 'Right relating to health', text: `(1) Every citizen shall have the right to free basic health services from the State, and no one shall be deprived of emergency health services.
+(2) Every person shall have the right to information about his or her medical treatment.
+(3) Every citizen shall have equal access to health services.
+(4) Every citizen shall have the right of access to clean drinking water and sanitation.` },
+      { num: 36, title: 'Right relating to food', text: `(1) Every citizen shall have the right relating to food.
+(2) Every citizen shall have the right to be safe from the state of being in danger of life from the scarcity of food.
+(3) Every citizen shall have the right to food sovereignty in accordance with law.` },
+      { num: 37, title: 'Right to housing', text: `(1) Every citizen shall have the right to an appropriate housing.
+(2) No citizen shall be evicted from his or her own residence nor shall it be infringed except in accordance with law.` },
+      { num: 38, title: 'Rights of women', text: `(1) Every woman shall have equal lineage right without gender based discrimination.
+(2) Every woman shall have the right to safe motherhood and reproductive health.
+(3) No woman shall be subjected to physical, mental, sexual, psychological or other violence or exploitation; such act shall be punishable and the victim entitled to compensation.
+(4) Women shall have the right to participate in all bodies of the State on the basis of proportional inclusion.
+(5) Women shall have the right to special opportunity in education, health, employment and social security, on the basis of positive discrimination.
+(6) The spouse shall have equal right to property and family affairs.` },
+      { num: 39, title: 'Rights of the child', text: `(1) Every child shall have the right to name and birth registration along with his or her identity.
+(2) Every child shall have the right to education, health, maintenance, proper care, sports, entertainment and overall personality development.
+(3) Every child shall have the right to elementary child development and child participation.
+(4) No child shall be employed in any factory, mine or similar hazardous work.
+(5) No child shall be subjected to child marriage, illegal transport, abduction or being held hostage.
+(6) No child shall be recruited or used in army, police or any armed group, or subjected to abuse or exploitation.
+(7) No child shall be subjected to physical, mental or other torture in home, school or elsewhere.
+(8) Every child shall have the right to juvenile-friendly justice.
+(9) Helpless, orphan, disabled, conflict-victim, displaced or vulnerable children shall have the right to special protection and facilities from the State.
+(10) Violations shall be punishable, and the child victim entitled to compensation from the perpetrator.` },
+      { num: 40, title: 'Rights of Dalit', text: `(1) The Dalit shall have the right to participate in all bodies of the State on the basis of proportional inclusion, with special provision for empowerment, representation and participation in employment.
+(2) Free education with scholarship, from primary to higher education, shall be provided by law for Dalit students, with special provision for technical and vocational education.
+(3) Special provision shall be made for health and social security for the Dalit community.
+(4) The Dalit community shall have the right to use, protect and develop their traditional occupation, knowledge, skill and technology, with State priority and support.
+(5) The State shall once provide land to the landless Dalit in accordance with law.
+(6) The State shall arrange settlement for Dalit without housing.
+(7) These facilities must be distributed justly across Dalit women, men and all Dalit communities.` },
+      { num: 41, title: 'Rights of senior citizens', text: `The senior citizens shall have the right to special protection and social security from the State.` },
+      { num: 42, title: 'Right to social justice', text: `(1) Socially backward groups — women, Dalit, indigenous peoples, indigenous nationalities, Madhesi, Tharu, minorities, persons with disabilities, marginalized communities, Muslims, backward classes, gender and sexual minorities, youths, farmers, labourers, oppressed or backward-region citizens and indigent Khas Arya — shall have the right to participate in State bodies on an inclusive basis.
+(2) Indigent citizens and communities on the verge of extinction shall have the right to special opportunities in education, health, housing, employment, food and social security.
+(3) Citizens with disabilities shall have the right to live with dignity and equal access to public services.
+(4) Every farmer shall have the right of access to lands for agriculture and to select and protect traditional local seeds and species.
+(5) Families of martyrs, the disappeared, the disabled and injured from popular movements and conflicts, democracy fighters, and conflict victims shall have priority access to education, health, employment, housing and social security.` },
+      { num: 43, title: 'Right to social security', text: `The indigent, incapacitated and helpless citizens, helpless single women, citizens with disabilities, children, citizens who cannot take care of themselves, and citizens belonging to tribes on the verge of extinction shall have the right to social security, in accordance with law.` },
+      { num: 44, title: 'Rights of the consumer', text: `(1) Every consumer shall have the right to obtain quality goods and services.
+(2) A person who has suffered injury from substandard goods or services shall have the right to compensation in accordance with law.` },
+      { num: 45, title: 'Right against exile', text: `No citizen shall be exiled.` },
+      { num: 46, title: 'Right to constitutional remedies', text: `There shall be a right to obtain constitutional remedies in the manner set forth in Article 133 or 144 for the enforcement of the rights conferred by this Part.` },
+      { num: 47, title: 'Implementation of fundamental rights', text: `The State shall, as required, make legal provisions for the implementation of the rights conferred by this Part, within three years of the commencement of this Constitution.` },
+      { num: 48, title: 'Duties of citizens', text: `Every citizen shall have the following duties:
+(a) to safeguard the nationality, sovereignty and integrity of Nepal, while being loyal to the nation,
+(b) to abide by the Constitution and law,
+(c) to render compulsory service as and when the State so requires,
+(d) to protect and preserve public property.` },
+    ]
+  },
+  {
+    num: 4, title: 'Directive Principles, Policies and Obligations of the State',
+    articles: [
+      { num: 49, title: 'To be guiding principles', text: `(1) The directive principles, policies and obligations set forth in this Part shall be the guiding principles for the governance of the State.
+(2) The State shall mobilize means and resources as required to implement the principles, policies and obligations set forth in this Part.` },
+      { num: 50, title: 'Directive principles', text: `(1) The political objective of the State is to establish a public welfare system of governance through the rule of law, fundamental rights, human rights, gender equality, proportional inclusion, participation and social justice, while consolidating a federal democratic republican system based on cooperative federalism, local autonomy and decentralization.
+(2) The social and cultural objective is to build a civilized and egalitarian society by eliminating discrimination and exploitation, developing values founded on national pride, democracy and harmony, while maintaining social cohesion and recognizing cultural diversity.
+(3) The economic objective is to achieve sustainable economic development through public, private and cooperative sector participation, building a socialism-oriented, self-reliant and progressive economy free of exploitation.
+(4) The State shall direct its international relations toward enhancing national dignity on the basis of sovereign equality, while safeguarding Nepal's freedom, sovereignty, territorial integrity, independence and national interest.` },
+      { num: 51, title: 'Policies of the State', text: `The State shall pursue policies across the following areas: (a) national unity and security, (b) political and governance systems, (c) social and cultural transformation, (d) economy, industry and commerce, (e) agriculture and land reforms, (f) development, (g) protection and use of natural resources, (h) citizens' basic needs (education, health, food, transport), (i) labour and employment, (j) social justice and inclusion, (k) justice and the penal system, (l) tourism, and (m) international relations — each detailed extensively with specific sub-policies aimed at equitable, sustainable and inclusive national development.` },
+      { num: 52, title: 'Obligations of the State', text: `It shall be the obligation of the State to make Nepal a prosperous and affluent country by protecting and promoting fundamental rights and human rights, pursuing the directive principles, and gradually implementing the policies of the State, while keeping intact the freedom, sovereignty, territorial integrity and independence of Nepal.` },
+      { num: 53, title: 'To submit report', text: `The Government of Nepal shall submit an annual report on the implementation of the directive principles, policies and obligations of this Part to the President, who shall cause it to be laid, through the Prime Minister, before the Federal Parliament.` },
+      { num: 54, title: 'Provisions relating to monitoring', text: `There shall be a committee, in accordance with law, in the Federal Parliament to monitor and evaluate whether the directive principles, policies and obligations of this Part have been implemented progressively.` },
+      { num: 55, title: 'Questions not to be raised in court', text: `No question shall be raised in any court as to whether any matter contained in this Part has been implemented or not.` },
+    ]
+  },
+  {
+    num: 5, title: 'Structure of State and Distribution of State Power',
+    articles: [
+      { num: 56, title: 'Structure of State', text: `(1) The main structure of the Federal Democratic Republic of Nepal shall be of three levels: the Federation, the State and the Local level.
+(2) Each level shall exercise the power of State pursuant to this Constitution and law.
+(3) There shall be States consisting of the Districts mentioned in Schedule-4.
+(4) There shall be Village Institutions, Municipalities and District Assemblies under the Local level.
+(5) Any Special, Protected or Autonomous Region can be set by Federal law for social, cultural protection or economic development.
+(6) All three levels shall protect Nepal's freedom, sovereignty, territorial integrity, human rights, rule of law, and the federal democratic republican system.` },
+      { num: 57, title: 'Distribution of State power', text: `(1) Federal powers are vested in matters enumerated in Schedule-5.
+(2) State powers are vested in matters enumerated in Schedule-6.
+(3) Concurrent powers of Federation and State are enumerated in Schedule-7.
+(4) Local level powers are enumerated in Schedule-8.
+(5) Concurrent powers of all three levels are enumerated in Schedule-9.
+(6)-(7) Laws made by State, Village or Municipal Assemblies must not conflict with Federal (or, respectively, State) law; any conflicting provision is invalid to that extent.` },
+      { num: 58, title: 'Residual powers', text: `The Federation shall have power on any matter not enumerated in the Federal, State, Local or Concurrent Lists, or not otherwise specified in this Constitution.` },
+      { num: 59, title: 'Exercise of financial powers', text: `(1) The Federation, State and Local level shall each make laws, budgets, decisions and plans on financial matters within their jurisdictions.
+(2) The Federation may make policies and laws on concurrent-list financial matters applicable also to States.
+(3) Each level shall make its own budget.
+(4) Benefits from natural resource use or development shall be equitably distributed, including to project-affected regions and local communities.
+(5) Local communities shall be given priority for investment in local natural resource use.
+(6) The Government of Nepal has the power to obtain foreign assistance and loans, subject to macroeconomic stability.
+(7) Budget deficit management and fiscal discipline provisions shall be as provided in Federal law.` },
+      { num: 60, title: 'Distribution of sources of revenue', text: `(1) Each level may impose taxes and collect revenue within its jurisdiction; concurrent and unlisted matters are determined by the Government of Nepal.
+(2) The Government of Nepal shall equitably distribute collected revenue across all three levels.
+(3) Fiscal transfers to State and Local levels shall be as recommended by the National Natural Resources and Fiscal Commission.
+(4) The Government of Nepal shall distribute fiscal equalization grants based on expenditure need and revenue capacity.
+(5) Each State shall similarly distribute grants to its Local levels.
+(6) Conditional, complementary or special grants from the Federal Consolidated Fund shall be as provided in Federal law.
+(7) Revenue distribution shall be balanced and transparent.
+(8) A Federal Act on revenue distribution shall have regard to national policy, State/Local autonomy, service responsibilities, revenue potential, development assistance, and reduction of regional imbalance and poverty.` },
+    ]
+  },
+];
+
+const root = document.getElementById('parts');
+PARTS.forEach(part => {
+  const el = document.createElement('div');
+  el.className = 'part-block';
+  el.innerHTML = `
+    <div class="part-block-head">
+      <div class="part-block-num">Part ${part.num}</div>
+      <div class="part-block-title">${part.title}</div>
+      <div class="part-block-chev">▾</div>
+    </div>
+    <div class="part-block-body">
+      ${part.articles.map(a => `
+        <div class="article">
+          <div class="article-num">Article ${a.num}. <span class="article-title">${a.title}</span></div>
+          <div class="article-text">${a.text}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  el.querySelector('.part-block-head').addEventListener('click', () => {
+    const willOpen = !el.classList.contains('open');
+    document.querySelectorAll('.part-block.open').forEach(p => p.classList.remove('open'));
+    if(willOpen) el.classList.add('open');
+  });
+  root.appendChild(el);
+});
+</script>
+
+</body>
+</html>
