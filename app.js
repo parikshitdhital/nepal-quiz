@@ -574,6 +574,7 @@ function clearRecallGlow(){
 function toggleRecallDropdown(){
   const isOpen = recallDropdown.classList.toggle('open');
   recallTab.classList.toggle('open', isOpen);
+  if(isOpen){ closeModePanel(); closePanel(); }
 }
 function closeRecallDropdown(){
   recallDropdown.classList.remove('open');
@@ -732,6 +733,7 @@ searchInput.addEventListener('input', runSearch);
 function togglePanel(){
   const isOpen = provPanel.classList.toggle('open');
   provTab.classList.toggle('open', isOpen);
+  if(isOpen){ closeModePanel(); closeRecallDropdown(); }
 }
 function closePanel(){
   provPanel.classList.remove('open');
@@ -742,6 +744,7 @@ provTab.addEventListener('click', togglePanel);
 function toggleModePanel(){
   const isOpen = modePanel.classList.toggle('open');
   modeTab.classList.toggle('open', isOpen);
+  if(isOpen){ closePanel(); closeRecallDropdown(); }
 }
 function closeModePanel(){
   modePanel.classList.remove('open');

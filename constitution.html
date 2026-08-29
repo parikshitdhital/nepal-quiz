@@ -165,7 +165,9 @@ CATEGORIES.forEach((cat, i) => {
     </div>
   `;
   catEl.querySelector('.category-head').addEventListener('click', () => {
-    catEl.classList.toggle('open');
+    const willOpen = !catEl.classList.contains('open');
+    document.querySelectorAll('.category.open').forEach(c => c.classList.remove('open'));
+    if(willOpen) catEl.classList.add('open');
   });
   catRoot.appendChild(catEl);
 });
