@@ -3,33 +3,181 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Constitution &amp; Governance — Loksewa Hub</title>
-<link rel="stylesheet" href="placeholder.css" />
+<title>Constitution of Nepal — Loksewa Hub</title>
+<link rel="stylesheet" href="constitution.css" />
 </head>
 <body>
 
-  <div class="wrap">
-    <a class="back-link" href="index.html">← Back to Loksewa Hub</a>
+<div class="wrap">
+  <a class="back-link" href="index.html">← Back to Loksewa Hub</a>
 
-    <div class="placeholder-card">
-      <div class="placeholder-icon">⚖️</div>
-      <div class="placeholder-badge">Coming Soon</div>
-      <h1 class="placeholder-title">Constitution &amp; Governance</h1>
-      <p class="placeholder-desc">
-        A dedicated practice tool covering Nepal's Constitution — built for the GK section that appears in nearly every Loksewa exam.
-      </p>
-
-      <div class="placeholder-topics">
-        <div class="placeholder-topics-label">Planned topics</div>
-        <ul>
-          <li>Fundamental rights &amp; directive principles</li>
-          <li>Federal, provincial &amp; local structure</li>
-          <li>Constitutional bodies &amp; their roles</li>
-          <li>Key articles &amp; amendments</li>
-        </ul>
-      </div>
+  <div class="page-header">
+    <div class="page-badge">Constitution of Nepal, 2072 (2015)</div>
+    <h1 class="page-title">The Constitution, Organized</h1>
+    <p class="page-sub">All 35 Parts and 9 Schedules, grouped by theme with plain-language summaries — built for quick browsing, not legal reading.</p>
+    <div class="page-stats">
+      <div class="stat"><div class="stat-num">35</div><div class="stat-label">Parts</div></div>
+      <div class="stat"><div class="stat-num">308</div><div class="stat-label">Articles</div></div>
+      <div class="stat"><div class="stat-num">9</div><div class="stat-label">Schedules</div></div>
     </div>
   </div>
+
+  <div id="categories"></div>
+
+  <div class="schedules-section">
+    <div class="schedules-title">The 9 Schedules</div>
+    <div id="schedules"></div>
+  </div>
+
+  <div class="page-footer-note">
+    Summaries are simplified for learning and revision — always refer to the official text for exact legal wording.<br/>
+    Sourced from the official Constitution of Nepal, 2072, published by the Government of Nepal.
+  </div>
+</div>
+
+<script>
+const CATEGORIES = [
+  {
+    icon: '🏛️',
+    title: 'Foundations',
+    parts: [
+      { num: 1, name: 'Preliminary', articles: '1–9', summary: 'Declares Nepal a sovereign, secular, federal democratic republic, and sets out the national flag, language and basic identity of the state.' },
+      { num: 2, name: 'Citizenship', articles: '10–15', summary: 'Defines who qualifies as a Nepali citizen — by descent or naturalization — and the rules around citizenship certificates.' },
+    ]
+  },
+  {
+    icon: '✊',
+    title: 'Rights & Duties',
+    parts: [
+      { num: 3, name: 'Fundamental Rights and Duties', articles: '16–48', summary: "The constitution's bill of rights — equality, freedom, life, education, health, and more — along with citizens' basic duties." },
+      { num: 4, name: 'Directive Principles, Policies and Obligations of the State', articles: '49–55', summary: "Sets the state's long-term goals and guiding policies across social, economic and political life — aspirational rather than directly enforceable in court." },
+    ]
+  },
+  {
+    icon: '🧩',
+    title: 'State Structure',
+    parts: [
+      { num: 5, name: 'Structure of State and Distribution of State Power', articles: '56–60', summary: "Establishes Nepal's three-tier federal structure — federal, provincial and local — and how power is divided between them." },
+      { num: 20, name: 'Interrelations between Federation, State and Local Level', articles: null, summary: 'Sets out how the three levels of government coordinate with each other and resolve conflicts between them.' },
+    ]
+  },
+  {
+    icon: '🏢',
+    title: 'Federal Government',
+    parts: [
+      { num: 6, name: 'President and Vice-President', articles: '61–73', summary: "Defines the ceremonial head of state's role, election process, powers and line of succession." },
+      { num: 7, name: 'Federal Executive', articles: '74–82', summary: 'Covers the Prime Minister and Council of Ministers — the government that actually runs the country day to day.' },
+      { num: 8, name: 'Federal Legislature', articles: '83–108', summary: "Establishes Nepal's Parliament — the House of Representatives and National Assembly — and how their members are elected." },
+      { num: 9, name: 'Federal Legislative Procedures', articles: '109–114', summary: 'Lays out the formal process for how a bill becomes law at the federal level.' },
+      { num: 10, name: 'Federal Financial Procedures', articles: '115+', summary: "Covers the federal budget, taxation and how government spending is authorized." },
+    ]
+  },
+  {
+    icon: '🏙️',
+    title: 'Provincial Government',
+    parts: [
+      { num: 13, name: 'State Executive', articles: null, summary: 'Mirrors the federal executive at the provincial level — the Chief Minister and provincial Council of Ministers.' },
+      { num: 14, name: 'State Legislature', articles: null, summary: "Establishes each province's own elected provincial assembly." },
+      { num: 15, name: 'State Legislative Procedures', articles: null, summary: 'How a bill becomes law within a province.' },
+      { num: 16, name: 'State Financial Procedures', articles: null, summary: 'Covers provincial budgeting and taxation powers.' },
+    ]
+  },
+  {
+    icon: '🏘️',
+    title: 'Local Government',
+    parts: [
+      { num: 17, name: 'Local Executive', articles: null, summary: 'Defines local government leadership — mayors, deputy mayors, and rural municipality chairs.' },
+      { num: 18, name: 'Local Legislature', articles: null, summary: 'The local assembly that makes decisions at the municipality or rural municipality level.' },
+      { num: 19, name: 'Local Financial Procedures', articles: null, summary: 'Budgeting and revenue rules for local governments.' },
+    ]
+  },
+  {
+    icon: '⚖️',
+    title: 'Judiciary & Legal Oversight',
+    parts: [
+      { num: 11, name: 'Judiciary', articles: '126–156', summary: 'Establishes the Supreme Court, High Courts and District Courts, and guarantees the independence of the judiciary.' },
+      { num: 12, name: 'Attorney General', articles: null, summary: "Defines the government's chief legal advisor and their role in prosecutions on behalf of the state." },
+    ]
+  },
+  {
+    icon: '🛡️',
+    title: 'Constitutional Bodies',
+    parts: [
+      { num: 21, name: 'Commission for the Investigation of Abuse of Authority', articles: '238–239', summary: "Nepal's top anti-corruption body — investigates abuse of authority by public officeholders." },
+      { num: 22, name: 'Auditor General', articles: null, summary: 'Audits government income and spending across all three levels of government.' },
+      { num: 23, name: 'Public Service Commission', articles: null, summary: "Oversees fair recruitment into Nepal's civil service." },
+      { num: 24, name: 'Election Commission', articles: null, summary: 'Conducts and regulates all elections in Nepal.' },
+      { num: 25, name: 'National Human Rights Commission', articles: null, summary: 'An independent watchdog that investigates human rights violations.' },
+      { num: 26, name: 'National Natural Resources and Fiscal Commission', articles: null, summary: 'Recommends how revenue and natural resources are shared between federal, provincial and local governments.' },
+      { num: 27, name: 'Other Commissions', articles: null, summary: 'Covers additional bodies such as commissions for women, Dalits, and inclusion of marginalized communities.' },
+    ]
+  },
+  {
+    icon: '📜',
+    title: 'Special & Final Provisions',
+    parts: [
+      { num: 28, name: 'Provisions Relating to National Security', articles: null, summary: 'Defines the role and command structure of the Nepal Army.' },
+      { num: 29, name: 'Provisions Relating to Political Parties', articles: null, summary: 'Rules for how political parties are formed, registered and regulated.' },
+      { num: 30, name: 'Emergency Power', articles: null, summary: "Allows the President to declare a state of emergency under specific conditions, subject to Parliament's review." },
+      { num: 31, name: 'Amendment to the Constitution', articles: null, summary: 'The formal process — typically a two-thirds majority — required to change the constitution.' },
+      { num: 32, name: 'Miscellaneous', articles: null, summary: 'Assorted provisions not covered elsewhere in the constitution.' },
+      { num: 33, name: 'Transitional Provisions', articles: null, summary: 'Rules that guided the shift from the old system of government to this constitution.' },
+      { num: 34, name: 'Definitions and Interpretation', articles: null, summary: 'Clarifies how key terms in the constitution should be legally understood.' },
+      { num: 35, name: 'Short Title, Commencement and Repeal', articles: null, summary: "States the constitution's official name and effective date, and repeals the previous constitution." },
+    ]
+  },
+];
+
+const SCHEDULES = [
+  { num: 1, desc: 'The National Anthem of Nepal' },
+  { num: 2, desc: 'The National Flag of Nepal — design and construction' },
+  { num: 3, desc: 'Oath forms for the President, Vice-President and other key officeholders' },
+  { num: 4, desc: 'Allocation of seats in the National Assembly by province' },
+  { num: 5, desc: 'List of matters under Federal jurisdiction' },
+  { num: 6, desc: 'List of matters under Provincial jurisdiction' },
+  { num: 7, desc: 'List of matters under concurrent Federal and Provincial jurisdiction' },
+  { num: 8, desc: 'List of matters under Local level jurisdiction' },
+  { num: 9, desc: 'List of matters under concurrent Federal, Provincial and Local jurisdiction' },
+];
+
+const catRoot = document.getElementById('categories');
+CATEGORIES.forEach((cat, i) => {
+  const catEl = document.createElement('div');
+  catEl.className = 'category';
+  catEl.innerHTML = `
+    <div class="category-head">
+      <div class="category-icon">${cat.icon}</div>
+      <div class="category-title">${cat.title}</div>
+      <div class="category-count">${cat.parts.length} part${cat.parts.length > 1 ? 's' : ''}</div>
+      <div class="category-chev">▾</div>
+    </div>
+    <div class="category-body">
+      ${cat.parts.map(p => `
+        <div class="part-row">
+          <div class="part-head">
+            <div class="part-num">Part ${p.num}</div>
+            <div class="part-name">${p.name}</div>
+            ${p.articles ? `<div class="part-articles">Art. ${p.articles}</div>` : ''}
+          </div>
+          <div class="part-summary">${p.summary}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  catEl.querySelector('.category-head').addEventListener('click', () => {
+    catEl.classList.toggle('open');
+  });
+  catRoot.appendChild(catEl);
+});
+
+const schedRoot = document.getElementById('schedules');
+SCHEDULES.forEach(s => {
+  const el = document.createElement('div');
+  el.className = 'schedule-item';
+  el.innerHTML = `<div class="schedule-num">${s.num}.</div><div>${s.desc}</div>`;
+  schedRoot.appendChild(el);
+});
+</script>
 
 </body>
 </html>

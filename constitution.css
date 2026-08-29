@@ -1,0 +1,216 @@
+:root{
+  --ink:#e9e4d8;
+  --bg-deep:#12201c;
+  --bg-panel:#182a24;
+  --ridge:#24392f;
+  --gold:#c9a24b;
+  --gold-soft:#e6c877;
+  --muted:#7c9088;
+  --font-display: 'Rajdhani', 'Trebuchet MS', sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+*{box-sizing:border-box;}
+html,body{
+  margin:0;padding:0;
+  min-height:100%;
+  background:radial-gradient(ellipse at 50% -10%, #1c332b 0%, var(--bg-deep) 60%);
+  color:var(--ink);
+  font-family:var(--font-body);
+}
+
+.wrap{
+  max-width:600px;
+  margin:0 auto;
+  padding:20px 14px 40px;
+}
+
+.back-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:var(--muted);
+  text-decoration:none;
+  font-size:13px;
+  margin-bottom:16px;
+  width:fit-content;
+}
+.back-link:hover{color:var(--gold-soft);}
+
+.page-header{
+  text-align:center;
+  margin-bottom:20px;
+}
+.page-badge{
+  display:inline-block;
+  font-size:11px;
+  letter-spacing:1px;
+  color:var(--gold-soft);
+  background:var(--bg-panel);
+  border:1px solid var(--ridge);
+  border-radius:20px;
+  padding:5px 14px;
+  margin-bottom:12px;
+}
+.page-title{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:26px;
+  margin:0 0 8px;
+  background:linear-gradient(180deg, var(--gold-soft), var(--gold));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.page-sub{
+  font-size:13px;
+  line-height:1.5;
+  color:var(--muted);
+  max-width:420px;
+  margin:0 auto;
+}
+.page-stats{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  margin-top:14px;
+}
+.stat{
+  text-align:center;
+}
+.stat-num{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:20px;
+  color:var(--gold-soft);
+}
+.stat-label{
+  font-size:10px;
+  color:var(--muted);
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+}
+
+/* Category accordion */
+.category{
+  background:var(--bg-panel);
+  border:1px solid var(--ridge);
+  border-radius:12px;
+  margin-bottom:10px;
+  overflow:hidden;
+}
+.category-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 16px;
+  cursor:pointer;
+  user-select:none;
+}
+.category-icon{
+  font-size:20px;
+  flex-shrink:0;
+}
+.category-title{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:15px;
+  letter-spacing:0.3px;
+  flex:1;
+}
+.category-count{
+  font-size:11px;
+  color:var(--muted);
+  flex-shrink:0;
+}
+.category-chev{
+  color:var(--muted);
+  font-size:12px;
+  transition:transform 0.2s;
+  flex-shrink:0;
+}
+.category.open .category-chev{transform:rotate(180deg);}
+
+.category-body{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.3s ease;
+}
+.category.open .category-body{
+  max-height:3000px;
+}
+
+.part-row{
+  padding:12px 16px 12px 46px;
+  border-top:1px solid var(--ridge);
+}
+.part-head{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  margin-bottom:4px;
+}
+.part-num{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:12px;
+  color:var(--gold);
+  flex-shrink:0;
+}
+.part-name{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:14px;
+  color:var(--ink);
+}
+.part-articles{
+  font-size:10.5px;
+  color:var(--muted);
+  margin-left:auto;
+  flex-shrink:0;
+}
+.part-summary{
+  font-size:12.5px;
+  line-height:1.5;
+  color:var(--muted);
+}
+
+/* Schedules */
+.schedules-section{
+  margin-top:18px;
+}
+.schedules-title{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:14px;
+  letter-spacing:0.5px;
+  color:var(--gold-soft);
+  margin-bottom:10px;
+  padding-left:2px;
+}
+.schedule-item{
+  display:flex;
+  gap:10px;
+  align-items:baseline;
+  background:var(--bg-panel);
+  border:1px solid var(--ridge);
+  border-radius:8px;
+  padding:10px 14px;
+  margin-bottom:6px;
+  font-size:12.5px;
+}
+.schedule-num{
+  font-family:var(--font-display);
+  font-weight:700;
+  color:var(--gold);
+  flex-shrink:0;
+}
+
+.page-footer-note{
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:20px;
+  line-height:1.6;
+}
