@@ -4,32 +4,115 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Nepal's History — Loksewa Hub</title>
-<link rel="stylesheet" href="placeholder.css" />
+<link rel="stylesheet" href="history.css" />
 </head>
 <body>
 
-  <div class="wrap">
-    <a class="back-link" href="index.html">← Back to Loksewa Hub</a>
+<div class="wrap">
+  <a class="back-link" href="index.html">← Back to Loksewa Hub</a>
 
-    <div class="placeholder-card">
-      <div class="placeholder-icon">📜</div>
-      <div class="placeholder-badge">Coming Soon</div>
-      <h1 class="placeholder-title">Nepal's History</h1>
-      <p class="placeholder-desc">
-        A practice tool covering the key events, eras and figures that shape Nepal's history — another core GK subject in the Loksewa syllabus.
-      </p>
-
-      <div class="placeholder-topics">
-        <div class="placeholder-topics-label">Planned topics</div>
-        <ul>
-          <li>Ancient &amp; medieval Nepal</li>
-          <li>Unification campaign</li>
-          <li>Rana &amp; Panchayat eras</li>
-          <li>Democracy movements &amp; key dates</li>
-        </ul>
-      </div>
-    </div>
+  <div class="page-header">
+    <div class="page-badge">A Timeline of Nepal</div>
+    <h1 class="page-title">Nepal's History</h1>
+    <p class="page-sub">Ten major eras, from ancient kingdoms to the federal republic — tap any card to read more.</p>
   </div>
+
+  <div id="eras"></div>
+
+  <div class="page-footer-note">
+    Dates are approximate for early eras where historical records vary.<br/>
+    A living page — more detail and figures will be added over time.
+  </div>
+</div>
+
+<script>
+const ERAS = [
+  {
+    icon: '🛕', gradient: 'linear-gradient(135deg, #3a2f1c, #5c4423)',
+    title: 'Ancient Nepal', dates: 'c. 800 BCE – 879 CE',
+    desc: 'The Kirat and Licchavi dynasties laid Nepal\'s earliest political and cultural foundations in the Kathmandu Valley.',
+    detail: `The Kirat dynasty is traditionally considered among the earliest rulers of the Kathmandu Valley, followed by the Licchavi dynasty from around the 4th century CE. The Licchavi period is especially significant for stone inscriptions, early Hindu-Buddhist syncretism, and trade links with Tibet and India that shaped Nepal's early urban culture.`
+  },
+  {
+    icon: '🏯', gradient: 'linear-gradient(135deg, #4a2d1f, #6e4429)',
+    title: 'Medieval Nepal — Malla Era', dates: '879 – 1768 CE',
+    desc: 'The Malla dynasty ruled the Kathmandu Valley for centuries, producing much of Nepal\'s classical art and architecture.',
+    detail: `The Malla period saw the Kathmandu Valley eventually split into three rival kingdoms — Kathmandu, Patan and Bhaktapur — each competing through monumental architecture, temple-building and the arts. Much of the Newar architectural heritage still visible in the Valley's Durbar Squares today dates from this era.`
+  },
+  {
+    icon: '⚔️', gradient: 'linear-gradient(135deg, #4a1f1f, #6e2929)',
+    title: 'Unification of Nepal', dates: '1743 – 1816',
+    desc: 'King Prithvi Narayan Shah of Gorkha led a military campaign that unified dozens of small hill states into modern Nepal.',
+    detail: `Starting from the small principality of Gorkha, Prithvi Narayan Shah conquered the Kathmandu Valley by 1769 and continued expanding Nepal's territory. This campaign is considered the founding of the modern Nepali state. The unification wars continued under his successors until the Anglo-Nepalese War (1814–1816) fixed Nepal's southern border roughly at its present extent.`
+  },
+  {
+    icon: '👑', gradient: 'linear-gradient(135deg, #3a2a1a, #5c4020)',
+    title: 'Rana Regime', dates: '1846 – 1951',
+    desc: 'A single family held hereditary control of the Prime Minister\'s office for over a century, reducing the monarchy to a figurehead.',
+    detail: `Following the Kot Massacre in 1846, Jung Bahadur Rana seized power and established a hereditary Prime Ministership for the Rana family, sidelining the Shah kings as ceremonial monarchs. This autocratic system lasted 104 years, marked by isolation from the outside world and limited modernization, until it was overthrown in 1951.`
+  },
+  {
+    icon: '🕊️', gradient: 'linear-gradient(135deg, #1f3a2e, #2d5c45)',
+    title: '1951 Revolution', dates: '1950 – 1951',
+    desc: 'A popular uprising, backed by King Tribhuvan, ended Rana rule and briefly restored the monarchy\'s active role in governance.',
+    detail: `King Tribhuvan sought asylum in India in 1950 and allied with the Nepali Congress party against the Rana regime. Combined political pressure and armed resistance forced the Ranas to negotiate, ending their 104-year hold on power in 1951 and opening a short-lived experiment with multiparty democracy.`
+  },
+  {
+    icon: '🏛️', gradient: 'linear-gradient(135deg, #2a2a3a, #40405c)',
+    title: 'Panchayat Era', dates: '1960 – 1990',
+    desc: 'King Mahendra dissolved Parliament and imposed a party-less Panchayat system, centralizing power directly under the monarchy.',
+    detail: `In 1960, King Mahendra dismissed the elected government, banned political parties, and introduced the Panchayat system — a tiered, party-less council structure with the King at the top. This period lasted three decades and was eventually challenged by a growing pro-democracy movement in the late 1980s.`
+  },
+  {
+    icon: '✊', gradient: 'linear-gradient(135deg, #3a1f2a, #5c2d40)',
+    title: 'People\'s Movement (Jana Andolan I)', dates: '1990',
+    desc: 'Mass pro-democracy protests forced King Birendra to end the Panchayat system and accept a multiparty constitutional monarchy.',
+    detail: `Sustained nationwide protests in early 1990, organized by an alliance of political parties, pressured King Birendra to lift the ban on political parties and accept a new constitution establishing a multiparty parliamentary democracy under a constitutional monarchy.`
+  },
+  {
+    icon: '🔥', gradient: 'linear-gradient(135deg, #3a1a1a, #5c2626)',
+    title: 'Maoist Insurgency', dates: '1996 – 2006',
+    desc: 'A decade-long civil war between Maoist rebels and the state reshaped Nepal\'s politics and ended with the monarchy\'s decline.',
+    detail: `The Communist Party of Nepal (Maoist) launched an armed insurgency in 1996 seeking to abolish the monarchy and establish a people's republic. The conflict caused significant loss of life over ten years. It formally ended with the 2006 Comprehensive Peace Accord, which brought the Maoists into mainstream politics.`
+  },
+  {
+    icon: '🎉', gradient: 'linear-gradient(135deg, #1a3a2a, #266e45)',
+    title: 'People\'s Movement II & the Republic', dates: '2006 – 2008',
+    desc: 'A second mass uprising stripped the King of power, and Nepal formally abolished its 240-year-old monarchy in 2008.',
+    detail: `In April 2006, renewed mass protests (Jana Andolan II) forced King Gyanendra to reinstate Parliament and relinquish absolute power he had seized in 2005. The reinstated Parliament progressively curtailed royal authority, and in May 2008 Nepal's first Constituent Assembly formally declared Nepal a federal democratic republic, ending the monarchy.`
+  },
+  {
+    icon: '📜', gradient: 'linear-gradient(135deg, #2a2a1a, #40402a)',
+    title: 'The 2015 Constitution', dates: '2015 – present',
+    desc: 'After years of drafting, Nepal adopted its current constitution, establishing a federal structure with seven provinces.',
+    detail: `Promulgated on 20 September 2015, the current Constitution of Nepal restructured the country into a federal system with seven provinces, three tiers of government, and an expanded set of fundamental rights. It remains the foundational legal document governing Nepal today, and is the subject of the Constitution & Governance tool on this site.`
+  },
+];
+
+const root = document.getElementById('eras');
+ERAS.forEach(era => {
+  const el = document.createElement('div');
+  el.className = 'era-card';
+  el.innerHTML = `
+    <div class="era-banner" style="background:${era.gradient}">${era.icon}</div>
+    <div class="era-body">
+      <div class="era-head">
+        <div class="era-title">${era.title}</div>
+        <div class="era-dates">${era.dates}</div>
+      </div>
+      <div class="era-desc">${era.desc}</div>
+      <div class="era-detail"><div class="era-detail-inner">${era.detail}</div></div>
+      <div class="era-chev">▾</div>
+    </div>
+  `;
+  el.addEventListener('click', () => {
+    const willOpen = !el.classList.contains('open');
+    document.querySelectorAll('.era-card.open').forEach(c => c.classList.remove('open'));
+    if(willOpen) el.classList.add('open');
+  });
+  root.appendChild(el);
+});
+</script>
 
 </body>
 </html>
