@@ -8,6 +8,29 @@
 </head>
 <body>
 
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+  <nav class="drawer" id="drawer">
+    <div class="drawer-header">
+      <div class="drawer-title">Loksewa Hub</div>
+      <button class="drawer-close" id="drawerClose" aria-label="Close menu">✕</button>
+    </div>
+    <div class="drawer-links">
+      <a href="index.html" class="drawer-link">🏠 Home</a>
+      <a href="quiz.html" class="drawer-link">🗺️ Nepal Geography Quiz</a>
+      <a href="constitution.html" class="drawer-link">⚖️ Constitution &amp; Governance</a>
+      <a href="history.html" class="drawer-link">📜 Nepal's History</a>
+      <div class="drawer-link soon">📰 Current Affairs <span class="drawer-soon-tag">Soon</span></div>
+      <div class="drawer-link soon">📝 Model Questions <span class="drawer-soon-tag">Soon</span></div>
+      <div class="drawer-link soon">📚 Study Material <span class="drawer-soon-tag">Soon</span></div>
+      <div class="drawer-link soon">🎨 Theme <span class="drawer-soon-tag">Soon</span></div>
+    </div>
+  </nav>
+
   <div class="wrap">
     <header class="hero">
       <div class="hero-badge">लोक सेवा तयारी</div>
@@ -66,6 +89,25 @@
 
     <footer class="foot-note">More tools are added over time — check back for updates.</footer>
   </div>
+
+  <script>
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const drawer = document.getElementById('drawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const drawerClose = document.getElementById('drawerClose');
+
+    function openDrawer(){
+      drawer.classList.add('open');
+      drawerBackdrop.classList.add('open');
+    }
+    function closeDrawer(){
+      drawer.classList.remove('open');
+      drawerBackdrop.classList.remove('open');
+    }
+    hamburgerBtn.addEventListener('click', openDrawer);
+    drawerClose.addEventListener('click', closeDrawer);
+    drawerBackdrop.addEventListener('click', closeDrawer);
+  </script>
 
 </body>
 </html>

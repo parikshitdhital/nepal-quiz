@@ -20,6 +20,116 @@ html,body{
   font-family:var(--font-body);
 }
 
+/* Hamburger menu */
+.hamburger-btn{
+  position:fixed;
+  top:16px;left:16px;
+  z-index:30;
+  width:38px;height:38px;
+  background:var(--bg-panel);
+  border:1px solid var(--ridge);
+  border-radius:10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  cursor:pointer;
+}
+.hamburger-btn span{
+  display:block;
+  width:18px;height:2px;
+  background:var(--gold-soft);
+  border-radius:2px;
+}
+
+.drawer-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(10,18,15,0.55);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.25s ease;
+  z-index:35;
+}
+.drawer-backdrop.open{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.drawer{
+  position:fixed;
+  top:0;left:0;
+  bottom:0;
+  width:80%;
+  max-width:300px;
+  background:var(--bg-panel);
+  border-right:1px solid var(--ridge);
+  z-index:40;
+  transform:translateX(-100%);
+  transition:transform 0.3s cubic-bezier(.32,.72,.35,1);
+  overflow-y:auto;
+}
+.drawer.open{
+  transform:translateX(0);
+}
+.drawer-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 16px;
+  border-bottom:1px solid var(--ridge);
+}
+.drawer-title{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:17px;
+  color:var(--gold-soft);
+}
+.drawer-close{
+  background:none;
+  border:none;
+  color:var(--muted);
+  font-size:16px;
+  cursor:pointer;
+  padding:4px 8px;
+}
+.drawer-links{
+  padding:10px 8px;
+  display:flex;
+  flex-direction:column;
+}
+.drawer-link{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 12px;
+  border-radius:8px;
+  color:var(--ink);
+  text-decoration:none;
+  font-size:14px;
+  font-family:var(--font-body);
+}
+.drawer-link:hover{
+  background:var(--bg-deep);
+}
+.drawer-link.soon{
+  color:var(--muted);
+  justify-content:space-between;
+  cursor:default;
+}
+.drawer-soon-tag{
+  font-size:10px;
+  letter-spacing:0.5px;
+  background:var(--bg-deep);
+  border:1px solid var(--ridge);
+  border-radius:10px;
+  padding:2px 8px;
+  color:var(--muted);
+}
+
 .wrap{
   max-width:520px;
   margin:0 auto;
